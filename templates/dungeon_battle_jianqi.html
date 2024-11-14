@@ -26,6 +26,8 @@
       top: 50%; /* 距离顶部占浏览器视口高度的5%，可根据需求调整 */
       left: 20%; /* 距离左侧占浏览器窗口宽度的10%，可根据需求调整 */
       z-index: 1;
+      overflow: auto; /* 添加滚动条 */
+      overflow-y: auto; /* 确保可以滚动 */
     }
 
     /* 定义按钮容器样式 */
@@ -75,20 +77,21 @@
 }
 
 .big-button {
-      position: relative;
-      display: inline-block;
-      z-index: 2;
-      width: 20%;
-      height: 20%;
-      left: 45%;
-      margin-bottom: 5%;
-      text-align: center;
-      vertical-align: middle;
-      margin: 1% auto; /* 居中 */
-      box-sizing: border-box;
-      background-image: url(../static/continue_button_bg_image.png);
-      background-size: cover;
-      cursor: pointer;
+  position: fixed;
+    display: inline-block;
+    z-index: 2;
+    width: 15vw; /* 使用视口宽度的相对单位vw，根据视口宽度自适应大小 */
+    height: 22vh; /* 使用视口高度的相对单位vh，根据视口高度自适应大小 */
+    left: 45%; /* 先将按钮左侧定位在视口宽度的50%位置 */
+    top: 90vh; /* 将按钮顶部定位在视口高度的80%位置，可根据实际需求调整此值 */
+    text-align: center;
+    vertical-align: middle;
+    margin: 0; /* 清除之前设置的外边距，使用上述定位方式来确定位置 */
+    box-sizing: border-box;
+    background-image: url(../static/continue_button_bg_image.png);
+    background-size: 100% 30%;
+    background-repeat: no-repeat;
+    cursor: pointer;
    }
 
   .big-button span {
@@ -114,7 +117,7 @@
     }
 
     .character-avatar {
-      width: 100%;
+      width: 80%;
       height: 120%;
       left: 12%;
       border-radius: 50%;
@@ -135,7 +138,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 120%;
+      width: 100%;
       height: 150%;
       z-index: -1;
     }
@@ -176,6 +179,7 @@
   .box-img {
     width: 100%;
     height: 100%;
+    cursor: pointer;
     }
 
   .box-caption {
@@ -219,6 +223,15 @@
     .big-button:active {
      transform: scale(0.95);
  }
+
+ .big-button span {
+            cursor: pointer;
+        }
+
+    .option-label {
+        padding: 0.5% 1%;
+        font-size: 50%;
+    }
   </style>
 </head>
 
@@ -266,41 +279,143 @@
     <h1 style="font-size:50px;">剑气长城</h1>
     <div class="battle-section">
       <h1 style="display:none;">战斗开始：你进入剑气长城，这里的妖气很重</h1>
-      <h1 style="display:none;">第一回合：你发现了一只受伤的上古大妖，以你福气境三层的修为，瞬间出手，一击必杀</h1>
-      <h1 style="display:none;">第二回合：暂无内容</h1>
-      <h1 style="display:none;">第三回合：暂无内容</h1>
+      <h1 id="round1" style="display:none;">第一回合：你发现了一只受伤的上古大妖，以你福气境三层的修为，你可以选择：
+        <button class="option-label option-a" data-next="after_attack_full_round1">A. 直接用全力攻击。</button>
+        <button class="option-label option-b" data-next="after_attack_weakness_round1">B. 先观察其伤势寻找弱点再攻击。</button>
+    </h1>
+    <h1 id="after_attack_full_round1" style="display:none;">第一回合选 A：你与大妖激烈对抗，虽凭借修为取胜但也受了轻伤，此时周围妖气更甚，你准备迎接新挑战。</h1>
+    <h1 id="after_attack_weakness_round1" style="display:none;">第一回合选 B：你发现其腿部有伤，攻击其腿部后轻松将其击杀，然而其死亡引发了一阵灵力波动，似乎有其他东西被吸引过来。</h1>
+    <h1 id="round2" style="display:none;">第二回合：你遇到了一个神秘的洞穴，你可以选择：
+        <button class="option-label option-c" data-next="after_enter_cave_round2">C. 进入洞穴探索。</button>
+        <button class="option-label option-d" data-next="after_pass_cave_round2">D. 绕过洞穴继续前进。</button>
+    </h1>
+    <h1 id="after_enter_cave_round2" style="display:none;">第二回合选 C：你在洞穴中发现了珍贵的宝物，但也惊动了守护宝物的怪物。</h1>
+    <h1 id="after_pass_cave_round2" style="display:none;">第二回合选 D：你继续前进，却发现前方的道路更加艰难。</h1>
+    <h1 style="display:none;">第三回合：暂无内容</h1>
+    <h1 style="display:none;">第四回合：暂无内容</h1>
+    <h1 id="round21" style="display:none;">第二回合：你遇到了一个神秘的洞穴，你可以选择：
+      <button class="option-label option-a1" data-next="111">C. 进入洞穴探索。</button>
+      <button class="option-label option-b1" data-next="222">D. 绕过洞穴继续前进。</button>
+  </h1>
+  <h1 id="111" style="display:none;">第二回合选 C：你在洞穴中发现了珍贵的宝物，但也惊动了守护宝物的怪物。</h1>
+  <h1 id="222" style="display:none;">第二回合选 D：你继续前进，却发现前方的道路更加艰难。</h1>
+    <h1 style="display:none;">第五回合：暂无内容</h1>
+    <h1 style="display:none;">第六回合：暂无内容</h1>
+    <h1 style="display:none;">第七回合：暂无内容</h1>
+        <h1 style="display:none;">第八回合：暂无内容</h1>
+        <h1 style="display:none;">第九回合：暂无内容</h1>
+        <h1 style="display:none;">第十回合：暂无内容</h1>
+        <h1 style="display:none;">第十一回合：暂无内容</h1>
+        <h1 style="display:none;">第十二回合：暂无内容</h1>
+        <h1 style="display:none;">第十三回合：暂无内容</h1>
+        <h1 style="display:none;">第十四回合：暂无内容</h1>
+        <h1 style="display:none;">第十五回合：暂无内容</h1>
+        <h1 style="display:none;">第十六回合：暂无内容</h1>
       <a id="end-of-content" href="#end-of-content" style="position: absolute; bottom: 0;"></a>
     </div>
   </div>
   <div class="big-button">
     <span>继续</span>
   </div>
-  <img class="top-right-image" src="../static/return_image.png" alt="Top Right Image" style="position: absolute; top: 0; right: 0;">
-  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;">
+  <img class="top-right-image" src="../static/return_image.png" alt="Top Right Image" style="position: absolute; top: 0; right: 0;cursor: pointer;">
+  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;cursor: pointer;">
   <script>
-    document.querySelector('.big-button').addEventListener('click', function () {
+    const bigButton = document.querySelector('.big-button');
+    const container = document.querySelector('.container');
+
+    // 为所有的选项按钮添加点击事件监听器
+    function addOptionListeners(currentRound) {
+        const optionButtons = currentRound.querySelectorAll('.option-label');
+        optionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const nextElementId = button.dataset.next;
+                const nextElements = document.querySelectorAll(`h1[id^="${nextElementId}"]`);
+                nextElements.forEach(element => {
+                    element.style.display = 'block';
+                    element.classList.add('show');
+                });
+                // 隐藏当前点击的选项按钮
+                button.style.display = 'none';
+                // 找到当前回合的其他选项按钮并移除对应的剧情
+                const currentRoundOptions = currentRound.querySelectorAll('.option-label');
+                currentRoundOptions.forEach(opt => {
+                    if (opt!== button && opt.parentNode.id === button.parentNode.id) {
+                        const otherOptionId = opt.dataset.next;
+                        const otherElements = document.querySelectorAll(`h1[id^="${otherOptionId}"]`);
+                        otherElements.forEach(otherElement => {
+                            otherElement.remove();
+                        });
+                        // 隐藏其他选项按钮
+                        opt.style.display = 'none';
+                    }
+                });
+                setTimeout(() => {
+                    const anchor = document.getElementById('end-of-content');
+                    if (anchor) {
+                        anchor.click();
+                    }
+                }, 100);
+                // 显示继续按钮
+                bigButton.style.display = 'block';
+            });
+        });
+    }
+
+    bigButton.addEventListener('click', function () {
         const battleSection = document.querySelector('.battle-section');
-        
-        // 获取当前隐藏的 h1 元素并显示
         let hiddenElements = battleSection.querySelectorAll('h1[style*="display:none;"]');
         if (hiddenElements.length > 0) {
-          // 显示第一个隐藏的 h1 元素
-          hiddenElements[0].style.display = 'block';
-          hiddenElements[0].classList.add('show');
-          
-          // 模拟点击锚点，使页面滚动到该位置
-          setTimeout(() => {
-            const anchor = document.getElementById('end-of-content');
-            if (anchor) {
-              anchor.click();  // 模拟点击锚点，触发滚动
+            const currentElement = hiddenElements[0];
+            currentElement.style.display = 'block';
+            currentElement.classList.add('show');
+            // 检查是否有选项按钮
+            const hasOptions = currentElement.querySelectorAll('.option-label').length > 0;
+            if (hasOptions) {
+                // 如果有选项按钮则隐藏继续按钮
+                bigButton.style.display = 'none';
+                // 为当前回合的选项按钮添加点击事件监听器
+                addOptionListeners(currentElement);
             }
-          }, 100);  // 小延时确保内容已更新后再触发滚动
         }
-      });
 
-    document.querySelector('.top-right-image').addEventListener('click', function() {
-       history.back();
-       history.back();
+        // 模拟滚动到底部的效果
+        const scrollStep = 10; // 每次滚动的距离，可以根据需要调整
+        const scrollInterval = setInterval(() => {
+            container.scrollTop += scrollStep;
+            if (container.scrollTop >= container.scrollHeight - container.clientHeight) {
+                clearInterval(scrollInterval);
+            }
+        }, 10);
+    });
+
+    // 在body上添加事件委托监听器来处理点击返回事件，并重置历史记录相关状态
+    // 返回上一个页面
+    document.body.addEventListener('click', function(event) {
+      if (event.target && event.target.matches('.top-right-image')) {
+        // 先重置历史记录相关状态，这里通过替换当前历史记录条目来实现
+        history.replaceState(null, document.title, location.href);
+
+        history.back();
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+    const boxImages = document.querySelectorAll('.box-img');
+    const urls = [
+        '../templates/xiulianjiemian.html', // Replace with the actual URL for the cultivate box
+        '../templates/skill.html', // Replace with the actual URL for the techniques box
+        '../templates/dungeon.html', // Replace with the actual URL for the dungeon box
+        '../templates/beibao.html' // Replace with the actual URL for the backpack box
+    ];
+    boxImages.forEach((img, index) => {
+        img.addEventListener('click', function () {
+            window.location.href = urls[index];
+        });
+    });
+});
+
+const bottomRightImage = document.querySelector('.bottom-right-image');
+    bottomRightImage.addEventListener('click', function() {
+        window.location.href = 'settings.html';
     });
   </script>
 </body>
