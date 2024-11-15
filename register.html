@@ -1,0 +1,490 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>角色创建</title>
+    <style>
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        background-image: url('../static/background.gif'); /* 设置背景图片 */
+        background-size: cover; /* 使背景图片覆盖整个页面 */
+        background-position: center; /* 使背景图片居中 */
+        background-repeat: no-repeat; /* 防止背景图片重复 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: 'Arial', sans-serif;
+        background-size: cover; /* 使背景图片覆盖整个页面 */
+        background-position: center; /* 使背景图片居中 */
+        background-repeat: no-repeat; /* 防止背景图片重复 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .section {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        width: calc(100% - 40px); /* 总宽度减去左右20px的空隙 */
+        max-width: 900px;
+        margin: 20px 0;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        border: 2px solid #ddd;
+        position: relative;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        position: absolute;
+        top: -40px;
+        left: -40px;
+        box-shadow: 0 0 10px rgba(110, 142, 251, 0.5);
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .content-group {
+        width:500px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        align-items: center;
+        padding: 40px 0 10px 0; /* Make space for the avatar */
+    }
+
+    .input-group input {
+        width: 60px; /* Fixed width */
+        padding: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .remaining-points {
+        font-weight: bold;
+        color: red;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .button {
+        display: block;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin: 20px auto; /* Set button to center */
+        text-align: center;
+    }
+
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 300px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    /* 带有背景图片的输入框样式 */
+    .name-input {
+        width: 100%; /* 使输入框宽度适应容器 */
+        padding: 10px; /* 添加内边距以便输入文字 */
+        border: none; /* 移除边框 */
+        background-image: url('../static/e.png'); /* 设置背景图片 */
+        background-size: 100% 100%; /* 使背景图片填满输入框 */
+        color: black; /* 设置文字颜色 */
+        font-size: 16px; /* 设置文字大小 */
+        text-align: center; /* 使文字居中 */
+        outline: none; /* 移除聚焦时的轮廓线 */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .character-selection {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .character-selection img {
+        width: 25%;
+        margin: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .title-with-image {
+    background-image: url('../static/c.png');
+    background-size: cover;
+    background-position: center;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    }
+    .talent-image {
+        background-image: url('../static/e.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100px; /* 根据图片实际大小调整 */
+        height: 100px; /* 根据图片实际大小调整 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px; /* 根据需要调整间距 */
+    }
+
+    .talent-image span {
+        background-color: rgba(255, 255, 255, 0.5); /* 半透明背景以提高文字可读性 */
+        border-radius: 10px;
+        padding: 5px 10px;
+        max-width: 100%;
+        text-align: center;
+        color: black;
+    }
+    .create-character-button {
+        background: none; /* 移除背景 */
+        border: none; /* 移除边框 */
+        cursor: pointer; /* 鼠标悬停时显示指针 */
+        outline: none; /* 移除聚焦时的轮廓线 */
+        box-shadow: none; /* 移除聚焦时的阴影 */
+        -webkit-appearance: none; /* 移除所有默认的外观 */
+        -moz-appearance: none; /* 移除所有默认的外观 */
+        appearance: none; /* 移除所有默认的外观 */
+    }
+
+    .create-character-button:focus,
+    .create-character-button:active,
+    .create-character-button:hover {
+        outline: none; /* 移除聚焦时的轮廓线 */
+        box-shadow: none; /* 移除聚焦时的阴影 */
+    }
+
+    /* 强制移除所有浏览器默认的焦点样式 */
+    .create-character-button::-moz-focus-inner {
+        border: 0;
+    }
+
+    /* 针对Firefox */
+    .create-character-button:-moz-focusring {
+        outline: 1px solid transparent;
+    }
+    @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+    }
+
+
+    @keyframes flash {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    }
+
+    .create-character-button img {
+    animation: bounce 2s infinite, rotate 2s infinite, flash 1s infinite; /* 组合动画 */
+    }
+    .account{
+
+        margin : 20px;
+    }
+    input{
+        outline:0;
+    }
+    #corner-image {
+    position: fixed;
+    right: 30px; /* 右边距10px */
+    bottom: 10px; /* 底部边距10px */
+    width: 100px; /* 图片宽度 */
+    height: auto; /* 高度自动 */
+    z-index: 1000; /* 确保图片在最顶层 */
+}
+
+
+    </style>
+    </head>
+    <body>
+        <div class="header">
+            <h2>角色创建</h2>
+        </div>
+            <div class="section">
+                <img src="../static/roleAvatar.png" alt="Avatar" class="avatar" onclick="openCharModal()">
+                <img src="../static/fuda.jpg" alt="fuda" id="corner-image">
+                <div class="title-with-image">属性点分配</div>
+                <div class="content-group" style="margin-left: 40px;" style="margin-right: 40px;">
+                    <div class="input-group">根骨: <input name="root_bone" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                    <div class="input-group">魅力: <input name="charm" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                    <div class="input-group">家境: <input name="family_back_ground" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                    <div class="input-group">悟性: <input name="insight" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                    <div class="input-group">机缘: <input name="fate" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                    <div class="input-group">体魄: <input name="physique" type="number" value="0" min="0" max="20" onchange="updatePoints()"></div>
+                </div>
+                <div class="remaining-points">剩余点数: <span id="remainingPoints">20</span></div>
+                <button class="button" type="button" onclick="randomAllocatePoints()">随机分配</button>
+            </div>
+
+            <div class="section">
+                <div class="title-with-image">天赋选择</div>
+                <div class="content-group" style="margin-left: 40px;" style="margin-right: 40px;">
+                    <label class="talent-image"><input type="radio" name="talent" value="天火灵根" checked><span>天火灵根</span></label>
+                    <label class="talent-image"><input type="radio" name="talent" value="考上福大"><span>考上福大</span></label>
+                    <label class="talent-image"><input type="radio" name="talent" value="貌若潘安"><span>貌若潘安</span></label>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="title-with-image" >传承选择</div>
+                <div class="content-group" style="margin-left: 40px;" style="margin-right: 40px;">
+                    <div class="talent-image"><input type="radio" name="inheritance" value="无" checked> 无</div>
+                    <div class="talent-image"><input type="radio" name="inheritance" value="剑宗"> 剑宗</div>
+                    <div class="talent-image"><input type="radio" name="inheritance" value="丹宗"> 丹宗</div>
+                </div>
+            </div>
+
+            <button class="button create-character-button" type="button" onclick="openNameModal()">
+                <img src="../static/d.png" alt="创建角色">
+            </button>
+
+            <!-- 角色名字 Modal -->
+            <div id="nameModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeNameModal()">&times;</span>
+                    <h3>输入角色名字</h3>
+                    <input type="text" id = "player_name" name="player_name" class="name-input" placeholder="玩家名字"><br>
+                    <h3>输入角色密码</h3>
+                    <input type="password" id = "password" name="password" class="name-input" placeholder="玩家密码">
+
+                    <button class="button" type="submit" onclick="createAccount()">确认创建</button>
+                </div>
+            </div>
+
+                <script src="../static/JavaScript/JQuery.js"></script>
+    <script>
+    // JavaScript functions to manage points and modal actions
+    let totalPoints = 20;
+
+function updatePoints() {
+    let total = 0;
+    let inputs = document.querySelectorAll('.section input[type="number"]');
+    let remainingPoints = totalPoints;
+
+    inputs.forEach(function (input) {
+        // 获取输入框当前值，若为空或非数字则默认为0
+        let value = parseInt(input.value, 10) || 0;
+
+        // 阻止负值设置
+        if (value < 0) {
+            value = 0;
+        }
+
+        // 限制输入的值不能超过剩余点数
+        value = Math.min(value, remainingPoints);
+        input.value = value;
+
+        total += value;
+        remainingPoints -= value; // 更新剩余点数
+    });
+
+    document.getElementById('remainingPoints').textContent = remainingPoints;
+
+    inputs.forEach(function (input) {
+        // 设置输入框的最大值为剩余点数加上当前输入框的值
+        let max = parseInt(input.value, 10) + remainingPoints;
+        input.setAttribute("max", max);
+    });
+}
+
+function randomAllocatePoints() {
+    let inputs = document.querySelectorAll('.section input[type="number"]');
+    let remaining = totalPoints;
+
+    inputs.forEach(function (input, index) {
+        if (index < inputs.length - 1) {
+            // 随机分配点数，但要确保最后一个输入框能把剩余点数分配完
+            let randomPoints = Math.floor(Math.random() * (remaining + 1));
+            input.value = randomPoints;
+            remaining -= randomPoints;
+        } else {
+            input.value = remaining;
+        }
+    });
+    updatePoints();
+}
+
+// 监听输入框的变化，以更新剩余点数和限制最大值
+document.querySelectorAll('.section input[type="number"]').forEach(function (input) {
+    input.addEventListener('change', updatePoints);
+    input.addEventListener('input', updatePoints);
+});
+
+        
+    function openCharModal() {
+        document.getElementById("charModal").style.display = "block";
+    }
+
+    function closeCharModal() {
+        document.getElementById("charModal").style.display = "none";
+    }
+
+    function selectCharacter(selectedImg) {
+        const avatar = document.querySelector('.avatar');
+        avatar.src = selectedImg.src;
+        closeCharModal();
+    }
+
+    function openNameModal() {
+        document.getElementById("nameModal").style.display = "block";
+    }
+    function closeNameModal() {
+    document.getElementById("nameModal").style.display = "none";
+}
+
+    function createAccount() {
+
+        var playerName = document.getElementById('player_name').value;
+        var password = document.getElementById('password').value;
+        var root_bone = document.getElementsByName('root_bone')[0].value;
+        var charm = document.getElementsByName('charm')[0].value;
+        var family_back_ground = document.getElementsByName('family_back_ground')[0].value;
+        var insight = document.getElementsByName('insight')[0].value;
+        var fate = document.getElementsByName('fate')[0].value;
+        var physique = document.getElementsByName('physique')[0].value;
+        var talents = document.querySelectorAll('input[type="radio"][name="talent"]');
+        var tale = null;
+
+        // 遍历单选按钮并找到被选中的按钮
+        talents.forEach(function(talent) {
+            if (talent.checked) {
+                tale = talent.value;
+            }
+        });
+        var inheritances = document.querySelectorAll('input[type="radio"][name="inheritance"]');
+        var inher = null;
+
+        // 遍历单选按钮并找到被选中的按钮
+        inheritances.forEach(function(inheritance) {
+            if (inheritance.checked) {
+                inher = inheritance.value;
+            }
+        });
+
+        if (playerName === '' || password === '') {
+            alert('玩家名字和密码不能为空');
+            return;
+        }
+        $.ajax({
+            url: '/check_name', // Flask 后端的路由
+            type: 'GET',
+            data: {
+                player_name : playerName
+            },
+            contentType: 'application/json', // 发送的数据类型
+            success: function(response) {
+                if (response >= 1) {
+                    alert("用户名已存在")
+                }else {
+
+                    $.ajax({
+            url: '/create_character', // Flask 后端的路由
+            type: 'POST',
+            data: JSON.stringify({
+                player_name : playerName,
+                password : password,
+                root_bone : root_bone,
+                charm : charm,
+                family_back_ground : family_back_ground,
+                insight : insight,
+                fate : fate,
+                physique : physique,
+                talent : tale,
+                inheritance : inher
+            }),
+            contentType: 'application/json', // 发送的数据类型
+            success: function(response) {
+
+                if (response.success) {
+            alert("角色创建成功！");
+            window.location.href = '{{ url_for("index") }}';
+        } else {
+            alert("角色创建失败：" + response.message);
+        }
+
+            },
+            error: function(xhr, status, error) {
+                // 请求失败的回调函数
+                console.error('AJAX request failed:', error);
+            }
+        });
+
+                }
+            },
+            error: function(xhr, status, error) {
+                // 请求失败的回调函数
+                console.error('AJAX request failed:', error);
+            }
+        });
+    }
+
+    </script>
+    </body>
+    </html>
