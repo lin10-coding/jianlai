@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置</title>
+    <style>
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-image: url('../static/bg_skill.png');
+            background-size: cover;
+            flex-direction: column;
+        }
+
+        .input-group {
+            text-align: center;
+        }
+
+        .character-info {
+            position: absolute;
+            top: 200px;
+            left: 100px;
+            transform: scale(1.5);
+        }
+
+        .character-avatar {
+            width: 200px;
+            height: 200px;
+            left: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .battle-value {
+            font-size: 30px;
+            position: relative;
+            top: 20px;
+            left: 100px;
+            color: rgb(0, 0, 0);
+        }
+
+        .avatar-bg-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            z-index: -1;
+        }
+
+        .avatar-bg-top {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .battle-value-bg {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: -2;
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .box-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .box-img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+        }
+
+        .box-caption {
+            font-size: 30px;
+            text-align: center;
+            margin-top: -20px;
+        }
+
+        .characteristic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 40%;
+            text-align: center;
+            padding: 10px 0;
+            background-image: url('../static/bg_header.png');
+            background-size: 80% 90%;
+            background-position: center;
+            background-color: transparent;
+        }
+
+        .content-group {
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 100px;
+            row-gap: 10px;
+        }
+
+        .settings-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+.return-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 71px;
+    background-image: url('../static/return_image.png');
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%; /* Increase width */
+    margin: 0 auto;
+    position: absolute; /* Change to absolute positioning */
+    top: 19%; /* Adjust top position to avoid overlap */
+    left: 50%;
+    transform: translateX(-50%) scale(1.2); /* Scale up the entire controls section */
+    z-index: 5; /* Adjust z-index to ensure it does not overlap with other elements */
+    background: rgba(255, 255, 255, 0); /* Make the background transparent */
+    padding: 30px; /* Increase padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.controls .control-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px; /* Increase margin */
+}
+
+.controls label {
+    font-size: 20px; /* Increase font size */
+    margin-right: 15px; /* Increase space between label and input */
+    width: 35%; /* Adjust width */
+    text-align: right; /* Align text to the right */
+}
+
+.controls input[type="range"],
+.controls select,
+.controls input[type="checkbox"] {
+    width: 65%; /* Adjust width */
+}
+
+.controls button {
+    width: 150px; /* Match the width of the "Fight Again" button */
+    height: 50px; /* Match the height of the "Fight Again" button */
+    padding: 10px; /* Adjust padding */
+    font-size: 16px; /* Adjust font size */
+    font-weight: bold;
+    margin-bottom: 10px; /* Adjust margin */
+    cursor: pointer;
+    background-image: url('../static/buttons.png');
+    background-size: cover;
+    background-color: transparent; /* Make the background transparent */
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darken on hover */
+}
+        .controls .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .controls .checkbox-group label {
+            margin: 0;
+        }
+
+        .exit-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 150px; /* Increase the width */
+    height: 150px; /* Increase the height */
+    background-image: url('../static/exit.png');
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    background-color: transparent; /* Make the background transparent */
+}
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: url('../static/bg_exit.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 40px;
+            border: 2px solid black;
+            z-index: 20;
+            text-align: center;
+            width: 300px;
+            animation: shake 0.5s;
+        }
+        .popup p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+        }
+        .popup button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-image: url('../static/e.png');
+            background-size: cover;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+        }
+        .popup textarea {
+    max-width: 100%;
+    max-height: 100px; /* Adjust the height as needed */
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+        .about-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border: 2px solid black;
+            z-index: 20;
+            text-align: center;
+            width: 300px;
+        }
+    @keyframes shake {
+        0% { transform: translate(-50%, -50%) translateX(0); }
+        25% { transform: translate(-50%, -50%) translateX(-10px); }
+        50% { transform: translate(-50%, -50%) translateX(10px); }
+        75% { transform: translate(-50%, -50%) translateX(-10px); }
+        100% { transform: translate(-50%, -50%) translateX(0); }
+    }
+    #musicPlayer {
+    display: none;
+}
+    .box-img {
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    cursor: pointer; /* Change cursor style on hover */
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="characteristic">
+            <div class="content-group">
+                <div class="input-group">根骨: <span id="display-root_bone">0</span></div>
+                <div class="input-group">魅力: <span id="display-charm">0</span></div>
+                <div class="input-group">家境: <span id="display-family_back_ground">0</span></div>
+                <div class="input-group">悟性: <span id="display-insight">0</span></div>
+                <div class="input-group">机缘: <span id="display-fate">0</span></div>
+                <div class="input-group">体魄: <span id="display-physique">0</span></div>
+            </div>
+        </div>
+    </div>
+<!-- Add this inside the body tag -->
+<button class="return-button" onclick="goBack()"></button>
+    <div class="character-info">
+        <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+        <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+        <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+        <div class="battle-value">1000</div>
+        <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+       <div class="box-container">
+    <div class="box-row">
+        <div>
+            <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="handleClick('cultivate')">
+            <div class="box-caption">修炼</div>
+        </div>
+        <div>
+            <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="handleClick('techniques')">
+            <div class="box-caption">功法</div>
+        </div>
+    </div>
+    <div class="box-row">
+        <div>
+            <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="handleClick('dungeon')">
+            <div class="box-caption">副本</div>
+        </div>
+        <div>
+            <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="handleClick('backpack')">
+            <div class="box-caption">背包</div>
+        </div>
+    </div>
+</div>
+    </div>
+
+   <div class="controls">
+    <div class="control-group">
+        <label for="masterVolume">主音量:</label>
+        <input type="range" id="masterVolume" min="0" max="100" value="50" oninput="setVolume('master', this.value)">
+    </div>
+
+    <div class="control-group">
+        <label for="maxVolume">最大音量:</label>
+       <button id="maxVolumeButton" onclick="toggleMaxVolume()">耳听八方</button>
+    </div>
+
+    <div class="control-group">
+        <label for="mute">静音:</label>
+        <button id="muteButton" onclick="toggleMute()">隐息遁形</button>
+    </div>
+
+    <div class="control-group">
+        <label for="backgroundMusic">选择背景音乐:</label>
+        <select id="backgroundMusic" onchange="changeBackgroundMusic(this.value)">
+            <option value="">无</option>
+            <option value="../static/music/jianlai.MP3">剑来</option>
+            <option value="../static/music/song2.MP3">Song 2</option>
+            <option value="../static/music/song3.MP3">Song 3</option>
+        </select>
+    </div>
+
+    <button onclick="showCDKPopup()">内测CDK兑换</button>
+    <button onclick="showAboutPopup()">关于我们</button>
+       <button onclick="showFeedbackPopup()">我有意见</button> <!-- New feedback button -->
+
+
+    <audio id="musicPlayer" controls loop autoplay></audio>
+</div>
+    <div class="popup" id="feedbackPopup">
+    <p>请提供您的反馈:</p>
+    <textarea id="feedbackInput" rows="4" cols="50"></textarea>
+    <button onclick="submitFeedback()">提交</button>
+    <button onclick="closeFeedbackPopup()">取消</button>
+</div>
+    <div class="popup" id="cdkPopup">
+        <p>请输入CDK兑换码:</p>
+        <input type="text" id="cdkInput">
+        <button onclick="redeemCDK()">就是这样</button>
+        <button onclick="closeCDKPopup()">等等再来</button>
+    </div>
+
+    <div class="about-popup" id="aboutPopup">
+    <p>超级无敌元始天尊暴龙战士银河战舰感谢你的游玩</p>
+</div>
+
+<div class="about-popup" id="easterEggPopup" style="display: none;">
+    <p style="font-size: 24px; font-weight: bold;">银河战舰十人小队 谢谢您的喜欢！</p>
+</div>
+
+    <button class="exit-button" onclick="showPopup()"></button>
+
+    <div class="popup" id="exitPopup">
+    <p>是否要退出修仙界？</p>
+    <button onclick="exitPage()">我意已决</button>
+    <button onclick="closePopup()">再战一次</button>
+</div>
+
+    <script>
+        function toggleMaxVolume() {
+    const musicPlayer = document.getElementById('musicPlayer');
+    const maxVolumeButton = document.getElementById('maxVolumeButton');
+    if (musicPlayer.volume < 1.0) {
+        musicPlayer.volume = 1.0;
+        document.getElementById('masterVolume').value = 100;
+        maxVolumeButton.textContent = '音量已最大';
+    } else {
+        musicPlayer.volume = 0.5;
+        document.getElementById('masterVolume').value = 50;
+        maxVolumeButton.textContent = '耳听八方';
+    }
+}
+
+function toggleMute() {
+    const musicPlayer = document.getElementById('musicPlayer');
+    const muteButton = document.getElementById('muteButton');
+    musicPlayer.muted = !musicPlayer.muted;
+    muteButton.textContent = musicPlayer.muted ? '取消静音' : '隐息遁形';
+}
+        function showFeedbackPopup() {
+    const popup = document.getElementById('feedbackPopup');
+    popup.style.display = 'block';
+}
+
+function closeFeedbackPopup() {
+    const popup = document.getElementById('feedbackPopup');
+    popup.style.display = 'none';
+}
+
+function submitFeedback() {
+    const feedback = document.getElementById('feedbackInput').value;
+    alert(`反馈已提交: ${feedback}`);
+    closeFeedbackPopup();
+}
+        function handleClick(action) {
+    alert(`You clicked on ${action}`);
+    // Add your logic here for each action
+}
+         function exitPage() {
+        window.location.href = '/exit'; // Replace with the actual exit URL or logic
+    }
+
+       function setVolume(type, value) {
+            const volume = value / 100;
+            const musicPlayer = document.getElementById('musicPlayer');
+            musicPlayer.volume = volume;
+            console.log(`${type} volume set to ${value}`);
+        }
+
+        function setMaxVolume(isChecked) {
+            const musicPlayer = document.getElementById('musicPlayer');
+            if (isChecked) {
+                musicPlayer.volume = 1.0;
+                document.getElementById('masterVolume').value = 100;
+            }
+        }
+
+        function setMute(isChecked) {
+            const musicPlayer = document.getElementById('musicPlayer');
+            musicPlayer.muted = isChecked;
+        }
+
+         function changeBackgroundMusic(src) {
+        const musicPlayer = document.getElementById('musicPlayer');
+        if (src) {
+            musicPlayer.src = src;
+            musicPlayer.loop = true; // Ensure the music loops
+            musicPlayer.play();
+        } else {
+            musicPlayer.pause();
+            musicPlayer.src = '';
+        }
+    }
+
+        function showCDKPopup() {
+            const popup = document.getElementById('cdkPopup');
+            popup.style.display = 'block';
+        }
+
+        function closeCDKPopup() {
+            const popup = document.getElementById('cdkPopup');
+            popup.style.display = 'none';
+        }
+
+        function redeemCDK() {
+            const cdk = document.getElementById('cdkInput').value;
+            alert(`CDK ${cdk} 已兑换`);
+            closeCDKPopup();
+        }
+
+      let clickCount = 0;
+let clickTimer;
+let isEasterEggActive = false;
+
+function showAboutPopup() {
+    if (isEasterEggActive) return;
+
+    clickCount++;
+    if (clickCount === 1) {
+        clickTimer = setTimeout(() => {
+            clickCount = 0;
+        }, 5000);
+    }
+
+    if (clickCount === 10) {
+        clearTimeout(clickTimer);
+        clickCount = 0;
+        isEasterEggActive = true;
+        const easterEggPopup = document.getElementById('easterEggPopup');
+        easterEggPopup.style.display = 'block';
+        setTimeout(() => {
+            easterEggPopup.style.opacity = 1;
+            easterEggPopup.style.transition = 'opacity 5s';
+            easterEggPopup.style.opacity = 0;
+            setTimeout(() => {
+                easterEggPopup.style.display = 'none';
+                isEasterEggActive = false;
+            }, 5000);
+        }, 0);
+    } else {
+        const popup = document.getElementById('aboutPopup');
+        popup.style.display = 'block';
+        setTimeout(() => {
+            popup.style.opacity = 1;
+            popup.style.transition = 'opacity 5s';
+            popup.style.opacity = 0;
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 5000);
+        }, 0);
+    }
+}
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const musicPlayer = document.getElementById('musicPlayer');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        backgroundMusic.value = ''; // Default to "None"
+        musicPlayer.volume = 0.5;
+    });
+
+
+         function showPopup() {
+        const popup = document.getElementById('exitPopup');
+        popup.style.display = 'block';
+        popup.style.animation = 'shake 0.5s';
+    }
+
+    function closePopup() {
+        const popup = document.getElementById('exitPopup');
+        popup.style.display = 'none';
+
+        function exitPage() {
+            window.location.href = '/exit'; // Replace with the actual exit URL or logic
+        }
+
+
+
+    }
+    // Add this JavaScript function
+function goBack() {
+    window.history.back();
+}
+    </script>
+</body>
+</html>
