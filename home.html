@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="../static/favicon.ico" rel="shortcut icon">
+
+<title>游戏主页面</title>
+<style>
+  
+    html {
+      font-family: Arial, sans-serif;
+      background-image: url(../static/bg_dungeon.png);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .character-info {
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      width: 10%;
+      height: 10%;
+      transform: scale(1.5);
+    }
+
+    .character-avatar {
+      width: 100%;
+      height: 120%;
+      left: 12%;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .battle-value {
+      font-size: 100%;
+      position: relative;
+      top: 45%;
+      left: 40%;
+      color: rgb(0, 0, 0);
+      width: 100%;
+      height: 100%;
+    }
+
+    .avatar-bg-bottom {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 120%;
+      height: 150%;
+      z-index: -1;
+    }
+
+    .avatar-bg-top {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      width: 100%;
+      height: 50%;
+      z-index: 1;
+    }
+
+    .battle-value-bg {
+      position: absolute;
+      top: 150%;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      z-index: -2;
+    }
+
+    .box-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+    }
+
+    .box-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+    }
+
+    .box-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .box-caption {
+      font-size: 100%;
+      text-align: center;
+      margin-top: -20%;
+      width: 100%;
+      height: 100%;
+    }
+
+        /* 属性条 */
+        .attribute-bar {
+            display: flex;
+            justify-content: space-around;
+            width: 60%;
+            right: 50%;
+            margin-left: 22%;
+            margin-top: 0;
+            background-image: url('../static/dingbubeijing.png');
+            background-size: auto 120%;
+            background-position: center;
+            padding: 1%;
+            border-radius: 1%;
+        }
+
+        .attribute-bar div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4%;
+        }
+
+    .event-description-container {
+      position: absolute;
+      top: 20%;
+      left: 25%;
+      width: 50%;
+      height: 60%; /* 限制文本框高度 */
+      color: white;
+      font-size: 90%;
+      line-height: 1.2;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      overflow-y: auto; /* 允许垂直滚动 */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* 将按钮固定在容器底部 */
+      align-items: center; /* 垂直居中内容 */
+    }
+
+    .event-description {
+      flex-grow: 1;
+      overflow-y: auto; /* 如有需要可滚动 */
+      width: 100%; /* 让描述文本占满容器的宽度 */
+    }
+
+
+    .event-description p {
+      margin: 5px 0;
+
+    }
+
+    .next-year-button {
+      width: 100%; /* 自动适应内容 */
+      padding: 10px 20px; /* 添加左右内边距 */
+      background-image: url(../static/wenben.png); /* 按钮的背景图片 */
+      background-size: cover;
+      background-position: center;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 90%;
+      text-align: center;
+      margin-top: 15px;
+      display: block; /* 按钮始终显示 */
+      align-self: flex-end; /* 将按钮固定在容器底部 */
+    }
+    
+    /* 定位帮助按钮：左上角 */
+    .help-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 50px;
+      height: 50px;
+      background-image: url('../static/help.png'); /* 请替换为实际的帮助图标路径 */
+      background-size: contain;
+      background-position: center;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    /* 定位设置按钮：右下角 */
+    .settings-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 50px;
+      height: 50px;
+      background-image: url('../static/lock.png'); /* 请替换为实际的设置图标路径 */
+      background-size: contain;
+      background-position: center;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .box-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+  }
+
+  .box-button img {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s;
+  }
+
+  .box-button img:hover {
+    transform: scale(1.05);
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="character-info">
+    <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+    <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+    <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+    <div class="battle-value">1000</div>
+    <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+    <div class="box-container">
+      <div class="box-row">
+        <div>
+          <button class="box-button" onclick="cultivate()">
+            <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="toCultivate()">
+            <div class="box-caption">修炼</div>
+          </button>
+        </div>
+        <div>
+          <button class="box-button" onclick="showTechniques()">
+            <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
+            <div class="box-caption">功法</div>
+          </button>
+        </div>
+      </div>
+      <div class="box-row">
+        <div>
+          <button class="box-button" onclick="enterDungeon()">
+            <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
+            <div class="box-caption">副本</div>
+          </button>
+        </div>
+        <div>
+          <button class="box-button" onclick="openBackpack()">
+            <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
+            <div class="box-caption">背包</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 属性条 -->
+  <div class="attribute-bar">
+    <div>
+        <span>根骨: 7</span>
+        <span>悟性: 2</span>
+    </div>
+    <div>
+        <span>魅力: 3</span>
+        <span>机缘: 2</span>
+    </div>
+    <div>
+        <span>家境: 5</span>
+        <span>体魄: 1</span>
+    </div>
+</div>
+
+<div class="event-description-container">
+    <div class="event-description" id="event-description">
+        <!-- 事件描述内容 -->
+    </div>
+    <!-- 加载中的提示将在这里显示 -->
+    <div id="loadingIndicator" style="display:none; margin-top: 10px; text-align: center;">加载中...</div>
+    <button class="next-year-button" onclick="nextYear()">开启下一年</button>
+</div>
+  <!-- 帮助和设置按钮 -->
+  <button class="help-button" onclick="showHelp()"></button>
+  <button class="settings-button" onclick="showSettings()"></button>
+
+  <script src="../static/JavaScript/JQuery.js"></script>
+  <script>
+    // 用于控制事件描述显示的函数
+function nextYear() {
+    // 获取事件描述容器和加载提示元素
+    var eventDescription = document.querySelector('.event-description');
+    var loadingIndicator = document.getElementById('loadingIndicator');
+
+    // 显示加载中的提示
+    loadingIndicator.style.display = 'block';
+
+    // 禁用按钮，防止重复点击
+    var nextYearButton = document.querySelector('.next-year-button');
+    nextYearButton.disabled = true;
+
+    $.ajax({
+        url: '/apprenticeAI',
+        type: 'get',
+        contentType: 'application/json',
+        success: function(res) {
+            // 创建一个新的段落元素
+            var newParagraph = document.createElement('p');
+            newParagraph.textContent = res; // 设置新段落的文本内容为返回的数据
+            eventDescription.appendChild(newParagraph); // 将新段落添加到事件描述容器中
+
+            eventDescription.scrollTop = eventDescription.scrollHeight;
+
+            // 隐藏加载中的提示
+            loadingIndicator.style.display = 'none';
+
+            // 重新启用按钮
+            nextYearButton.disabled = false;
+        },
+        error: function(res) {
+            console.error('Error:', res);
+            // 隐藏加载中的提示
+            loadingIndicator.style.display = 'none';
+            // 重新启用按钮
+            nextYearButton.disabled = false;
+        }
+    });
+}
+    function showHelp() {
+            alert("显示帮助内容...");
+        }
+        function showSettings() {
+            window.location.href='/settings'
+        }
+        function toCultivate() {
+            window.location.href='/cultivate'
+        }
+        function toSkill() {
+            window.location.href='/skill'
+        }
+        function toDungeon(){
+          window.location.href='/dungeon'
+        }
+        function toBag(){
+          window.location.href='/bag'
+        }
+  </script>
+</body>
+</html>
