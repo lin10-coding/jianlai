@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>功法页面</title>
+    <style>
+        html {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-image: url('../static/bg_skill.png');
+            background-size: cover;
+            flex-direction: column;
+
+    }
+
+html {
+    transform: scale(1);
+    transform-origin: 0 0;
+    transition: transform 0.2s ease-in-out;
+}
+
+        .input-group {
+            text-align: center;
+        }
+
+        .character-info {
+            position: absolute;
+            top: 200px;
+            left: 100px;
+            transform: scale(1.5);
+        }
+
+        .character-avatar {
+            width: 200px;
+            height: 200px;
+            left: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .battle-value {
+            font-size: 30px;
+            position: relative;
+            top: 20px;
+            left: 100px;
+            color: rgb(0, 0, 0);
+        }
+
+        .avatar-bg-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            z-index: -1;
+        }
+
+        .avatar-bg-top {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .battle-value-bg {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: -2;
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .box-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .box-img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+        }
+
+        .box-caption {
+            font-size: 30px;
+            text-align: center;
+            margin-top: -20px;
+        }
+        .characteristic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+        .content {
+    position: relative;
+    width: 800px; /* 根据skill图片的实际宽度设置 */
+    height: 800px; /* 根据skill图片的实际高度设置 */
+}
+
+.skill-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: transparent; /* Set background color to transparent */
+}
+
+.skill_1,
+.skill_2,
+.skill_3,
+.skill_4 {
+    position: absolute;
+}
+
+.skill_1 {
+    position: absolute;
+    top: 130px;
+    left: 130px;
+    width: 150px; /* 根据skill_1图片的实际宽度设置 */
+    height: 150px; /* 根据skill_1图片的实际高度设置 */
+}
+
+.skill_2 {
+    position: absolute;
+    top: 130px;
+    right: 130px;
+    width: 150px; /* 根据skill_2图片的实际宽度设置 */
+    height: 150px; /* 根据skill_2图片的实际高度设置 */
+}
+
+.skill_3 {
+    position: absolute;
+    bottom: 130px;
+    left: 130px;
+    width: 150px; /* 根据skill_3图片的实际宽度设置 */
+    height: 150px; /* 根据skill_3图片的实际高度设置 */
+}
+
+.skill_4 {
+    position: absolute;
+    bottom: 130px;
+    right: 130px;
+    width: 150px; /* 根据skill_4图片的实际宽度设置 */
+    height: 150px; /* 根据skill_4图片的实际高度设置 */
+}
+
+.skill_1 img,
+.skill_2 img,
+.skill_3 img,
+.skill_4 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    position: relative;
+    margin: 20px auto; /* 增加顶部和底部的间距，并将其居中 */
+    padding: 20px 40px; /* 增加内边距，提升整体感 */
+    width: 60%; /* 适当增加宽度 */
+    min-height: 200px; /* 设置最小高度，确保内容不至于过于压缩 */
+    color: #fff; /* 文本颜色改为纯白 */
+    background-color: #5d6d7e; /* 更温和的背景色 */
+    border: 1px solid #ccc; /* 添加边框，增强层次感 */
+    border-radius: 12px; /* 增加圆角，令其更加柔和 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* 添加阴影效果，提升立体感 */
+    cursor: pointer;
+    transition: all 0.3s ease; /* 平滑过渡所有属性 */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.skill-name {
+    position: absolute;
+    top: -20%;
+    left: -15%;
+    margin-bottom: 0;
+    width: auto;
+    height: auto;
+    color: #000;
+    display: inline-block;   /* 设置为内联块级元素，让它自适应内容的宽度 */
+            padding: 10px 20px;      /* 设置内边距，给文本周围增加空白 */
+            background-color: #3498db; /* 设置背景颜色 */
+            border-radius: 10px;      /* 设置圆角 */
+            border: 2px solid #2980b9; /* 设置边框 */
+            font-size: 16px;          /* 设置字体大小 */
+            line-height: 1.5;         /* 设置行高，保证文本的高度合理 */
+}
+
+.skill-description {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    position: relative; /* Allow position adjustments for children */
+}
+
+.skill-grade {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+.skill-grade span {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px; /* Add some space between the label and the description */
+}
+.upgrade-button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.discard-button {
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upgrade-button button:hover {
+    background-color: #0056b3;
+}
+.discard-button button:hover {
+    background-color: #0056b3;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* For skill images */
+.skill_1 img,
+.skill_2 img,
+.skill_3 img,
+.skill_4 img {
+    cursor: pointer;
+}
+
+/* For box images */
+.box-img {
+    cursor: pointer;
+}
+
+/* For modal close button */
+.close {
+    cursor: pointer;
+}
+.header {
+    position: relative;
+    top: -150px;
+    text-align: center;
+    padding: 10px 0; /* Optional: Add some padding */
+    background-image: url('../static/public_images/bg_header.png'); /* Add background image */
+    background-size: 80% 90% ;
+    background-position: center; /* Center the background image */
+    background-color: transparent; /* Set background color to transparent */
+}
+.content-group {
+    font-size: 20px; /* Increase the font size */
+    font-weight: bold; /* Make the text bold */
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 100px;
+    row-gap: 10px;
+}
+.settings-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.settings-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+.modal-content input[type="range"] {
+    width: 100%;
+    margin: 5px 0 15px;
+}
+
+.modal-content input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.modal-content select {
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0 20px;
+    font-size: 16px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-content div {
+    margin: 10px 0;
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="characteristic">
+        <div class="content-group">
+            <div class="input-group">根骨: <span id="display-root_bone">0</span></div>
+            <div class="input-group">魅力: <span id="display-charm">0</span></div>
+            <div class="input-group">家境: <span id="display-family_back_ground">0</span></div>
+            <div class="input-group">悟性: <span id="display-insight">0</span></div>
+            <div class="input-group">机缘: <span id="display-fate">0</span></div>
+            <div class="input-group">体魄: <span id="display-physique">0</span></div>
+        </div>
+        </div>
+    </div>
+    <div class="content" >
+        <img src="../static/skill.png" alt="Skill Image" class="skill-img">
+        <div class="skill_1"><img src="../static/skill_1.png" alt="Skill 1"></div>
+        <div class="skill_2"><img src="../static/skill_2.png" alt="Skill 2"></div>
+        <div class="skill_3"><img src="../static/skill_3.png" alt="Skill 3"></div>
+        <div class="skill_4"><img src="../static/skill_4.png" alt="Skill 4"></div>
+    </div>
+    <div id="skillModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3 id="skillName" class="skill-name">技能名称</h3>
+        <p id="skillDescription" class="skill-description"></p>
+        <p id="skillGrade" class="skill-grade"></p>
+        <button onclick="upgradeSkill()" class="upgrade-button">升级</button>
+        <button onclick="discardSkill()" class="discard-button">丢弃</button>
+    </div>
+        </div>
+        <div class="settings-icon">
+        <img src="../static/setup.png" alt="Settings Icon" onclick="showSettings()">
+        </div>
+
+
+    <div class="character-info">
+        <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+        <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+        <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+        <div class="battle-value">1000</div>
+        <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+        <div class="box-container">
+      <div class="box-row">
+        <div>
+          <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="toCultivate()">
+          <div class="box-caption" >修炼</div>
+        </div>
+        <div>
+          <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
+          <div class="box-caption">功法</div>
+        </div>
+      </div>
+      <div class="box-row">
+        <div>
+          <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
+          <div class="box-caption">副本</div>
+        </div>
+        <div>
+          <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
+          <div class="box-caption">背包</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+        const skills = [
+            {
+                name: '雷霆万钧',
+                description: '雷霆万钧乃是上古福门遗留的绝世功法，传说其创始人曾在雷电交加之时，领悟天地之威，得以吸纳天雷之力，修成此法。此功法专注于通过内外气机的融合，以无比的力量与速度，化身为雷电的化身，震撼敌人，副作用：当月电费加倍',
+                grade: '仙阶'
+            },
+            {
+                name: 'Skill 2',
+                description: 'Description for Skill 2',
+                grade: 'Grade 2'
+            },
+            {
+                name: 'Skill 3',
+                description: 'Description for Skill 3',
+                grade: 'Grade 3'
+            },
+            {
+                name: 'Skill 4',
+                description: 'Description for Skill 4',
+                grade: 'Grade 4'
+            }
+        ];
+
+        document.querySelectorAll('.skill_1, .skill_2, .skill_3, .skill_4').forEach((element, index) => {
+            element.addEventListener('click', () => {
+                openModal(skills[index]);
+            });
+        });
+    });
+
+    function openModal(skill) {
+        document.getElementById('skillName').textContent = skill.name;
+   document.getElementById('skillDescription').textContent = skill.description;
+        document.getElementById('skillGrade').innerHTML = `<span>功法品阶：</span>${skill.grade}`;
+        document.getElementById('skillModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('skillModal').style.display = 'none';
+    }
+
+    function upgradeSkill() {
+        alert('Upgrade Skill');
+    }
+
+    function discardSkill() {
+        alert('Discard Skill');
+    }
+
+        function updateAttributesSummary() {
+            document.getElementById('summary-root_bone').textContent = localStorage.getItem('root_bone') || 0;
+            document.getElementById('summary-charm').textContent = localStorage.getItem('charm') || 0;
+            document.getElementById('summary-family_back_ground').textContent = localStorage.getItem('family_back_ground') || 0;
+            document.getElementById('summary-insight').textContent = localStorage.getItem('insight') || 0;
+            document.getElementById('summary-fate').textContent = localStorage.getItem('fate') || 0;
+            document.getElementById('summary-physique').textContent = localStorage.getItem('physique') || 0;
+
+            document.getElementById('display-root_bone').textContent = localStorage.getItem('root_bone') || 0;
+            document.getElementById('display-charm').textContent = localStorage.getItem('charm') || 0;
+            document.getElementById('display-family_back_ground').textContent = localStorage.getItem('family_back_ground') || 0;
+            document.getElementById('display-insight').textContent = localStorage.getItem('insight') || 0;
+            document.getElementById('display-fate').textContent = localStorage.getItem('fate') || 0;
+            document.getElementById('display-physique').textContent = localStorage.getItem('physique') || 0;
+        }
+
+        updateAttributesSummary();
+    document.addEventListener('DOMContentLoaded', function () {
+    const boxImages = document.querySelectorAll('.box-img');
+    const urls = [
+        '/cultivate_page_url', // Replace with the actual URL for the cultivate box
+        '/techniques_page_url', // Replace with the actual URL for the techniques box
+        '../templates/dungeon.html', // Replace with the actual URL for the dungeon box
+        '/backpack_page_url' // Replace with the actual URL for the backpack box
+    ];
+
+
+    boxImages.forEach((img, index) => {
+        img.addEventListener('click', function () {
+            window.location.href = urls[index];
+        });
+    });
+});
+function setVolume(type, value) {
+    const volume = value / 100;
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicPlayer = document.getElementById('musicPlayer');
+
+    if (type === 'master') {
+        backgroundMusic.volume = volume;
+        musicPlayer.volume = volume;
+    } else if (type === 'sfx') {
+        // Implement SFX volume control logic here
+    } else if (type === 'background') {
+        backgroundMusic.volume = volume;
+    }
+    console.log(`${type} volume set to ${value}`);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicPlayer = document.getElementById('musicPlayer');
+    backgroundMusic.volume = 0.5; // Set the volume to 50%
+    musicPlayer.volume = 0.5; // Set the volume to 50%
+
+    document.getElementById('masterVolume').addEventListener('input', function () {
+        setVolume('master', this.value);
+    });
+
+    document.getElementById('sfxVolume').addEventListener('input', function () {
+        setVolume('sfx', this.value);
+    });
+
+    document.getElementById('backgroundVolume').addEventListener('input', function () {
+        setVolume('background', this.value);
+    });
+
+    document.getElementById('mute').addEventListener('change', function () {
+        const isMuted = this.checked;
+        backgroundMusic.muted = isMuted;
+        musicPlayer.muted = isMuted;
+    });
+});
+
+function toggleMute(isMuted) {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const musicPlayer = document.getElementById('musicPlayer');
+    backgroundMusic.muted = isMuted;
+    musicPlayer.muted = isMuted;
+    console.log(`Mute ${isMuted ? 'enabled' : 'disabled'}`);
+}
+
+let audioContext;
+let audioElement;
+let audioSource;
+let audioOutput;
+
+document.addEventListener('DOMContentLoaded', function () {
+    audioElement = document.getElementById('musicPlayer');
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioSource = audioContext.createMediaElementSource(audioElement);
+    audioOutput = audioContext.destination;
+
+    audioSource.connect(audioOutput);
+
+    document.getElementById('audioOutput').addEventListener('change', function () {
+        setAudioOutput(this.value);
+    });
+});
+
+function setAudioOutput(deviceId) {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+        const audioDevices = devices.filter(device => device.kind === 'audiooutput');
+        const selectedDevice = audioDevices.find(device => device.deviceId === deviceId);
+
+        if (selectedDevice) {
+            audioElement.setSinkId(selectedDevice.deviceId).then(() => {
+                console.log(`Audio output set to ${selectedDevice.label}`);
+            }).catch(error => {
+                console.error('Error setting audio output:', error);
+            });
+        } else {
+            console.warn('Selected audio output device not found');
+        }
+    }).catch(error => {
+        console.error('Error enumerating devices:', error);
+    });
+}
+function openSettingsModal() {
+    document.getElementById('settingsModal').style.display = 'block';
+}
+
+function closeSettingsModal() {
+    document.getElementById('settingsModal').style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', function () {
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    backgroundMusic.volume = 0.5; // Set the volume to 50%
+});
+function toCultivate() {
+            window.location.href='/cultivate'
+        }
+        function toSkill() {
+            window.location.href='/skill'
+        }
+        function toDungeon(){
+          window.location.href='/dungeon'
+        }
+        function toBag(){
+          window.location.href='/bag'
+        }
+        function showSettings() {
+            window.location.href='/settings'
+        }
+    </script>
+</body>
+</html>
