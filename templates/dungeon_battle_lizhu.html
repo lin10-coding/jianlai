@@ -177,8 +177,9 @@
     }
 
   .box-img {
-    width: 100%;
-    height: 100%;
+    width: 100px;
+            height: 100px;
+            margin: 5px;
     cursor: pointer;
     }
 
@@ -200,25 +201,39 @@
      opacity: 1;
  }
 
-    .new-component {
-      position: relative;
-      top: 10%; /* 距离顶部占容器高度的10%，可根据需求调整 */
-      left: 30%; /* 距离左侧占容器宽度的5%，可根据需求调整 */
-      display: inline-block;
-      text-align: left;
-      font-size: 200%;
-    }
+    .characteristic {
+  width: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
-  .new-component p {
-      display: flex;
-      flex-wrap: wrap;
-      width: 280%;
-    }
+        .header {
+            position: relative;
+            top: 0;
+            left: 0%;
+            text-align: center;
+            padding: 10px 0;
+            background-image: url('../static/bg_header.png');
+            background-size: 20% 50%;
+            background-position: center;
+            border: none;
+            background-repeat: no-repeat; /* 添加这一行，使背景图片不重复显示 */
+            background-color: transparent;
+        }
 
-  .new-component p span {
-      display: inline-block;
-      width: 33%;
-    }
+        .content-group {
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 100px;
+            row-gap: 10px;
+        }
 
     .big-button:active {
      transform: scale(0.95);
@@ -232,6 +247,79 @@
         padding: 0.5% 1%;
         font-size: 50%;
     }
+    #experience-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%; /* 设置宽度为100%，使其与页面宽度一致 */
+      height: 10px;
+      background-color: gray;
+      border-radius: 5px;
+    }
+
+    /* 模态框的整体样式 */
+.modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        /* 模态框内容区域的样式 */
+     .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            text-align: center;
+        }
+        /* 原关闭按钮样式已无需，可删除或注释掉以下部分 */
+        .close {
+          display: none;
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+      .close:hover,
+      .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        } 
+         .realm-display {
+    position: flex;
+    height: 50px;
+    width: 200px;
+    margin-top: -10%;
+    margin-left: 40%;
+    /* 使用transform实现水平居中 */
+    transform: translateX(-50%);
+    background-image: url('../static/realm_bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.battle-value更高的z-index值，假设.battle-value的z-index为默认值0 */
+    z-index: 2;
+}
+
+.realm-value {
+    font-size: 20px;
+    position: relative;
+    top: 20%;
+    left: 40%;
+    color: rgb(0, 0, 0);
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.realm-display更低的z-index值 */
+    z-index: 1;
+}
   </style>
 </head>
 
@@ -240,88 +328,239 @@
     <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
     <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
     <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
-    <div class="battle-value">1000</div>
+    <div class="battle-value" id="fighting_strength"></div>
+            <!-- 新增的境界显示部分 -->
+    <div class="realm-display">
+      <span class="realm-value" id="realm-value">境界名称</span>
+    </div>
     <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
     <div class="box-container">
       <div class="box-row">
         <div>
-          <img class="box-img" src="../static/cultivate_box.png" alt="Box 1">
-          <div class="box-caption">修炼</div>
+          <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="toCultivate()">
+          <div class="box-caption" >修炼</div>
         </div>
         <div>
-          <img class="box-img" src="../static/techniques_box.png" alt="Box 2">
+          <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
           <div class="box-caption">功法</div>
         </div>
       </div>
       <div class="box-row">
         <div>
-          <img class="box-img" src="..//static/dungeon_box.png" alt="Box 3">
+          <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
           <div class="box-caption">副本</div>
         </div>
         <div>
-         <img class="box-img" src="../static/backpack_box.png" alt="Box 4">
+          <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
           <div class="box-caption">背包</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="new-component">
-    <p>
-      <span>根骨:7</span>
-      <span>家境:5</span>
-      <span>悟性:2</span>
-      <span>机缘:2</span>
-      <span>魅力:3</span>
-      <span>体魄:1</span>
-    </p>
-  </div>
+  <div class="header">
+        <div class="characteristic">
+            <div class="content-group">
+                <div class="input-group">根骨: <span id="display-root_bone"></span></div>
+                <div class="input-group">魅力: <span id="display-charm"></span></div>
+                <div class="input-group">家境: <span id="display-family_back_ground">0</span></div>
+                <div class="input-group">悟性: <span id="display-insight"></span></div>
+                <div class="input-group">机缘: <span id="display-fate"></span></div>
+                <div class="input-group">体魄: <span id="display-physique"></span></div>
+            </div>
+        </div>
+    </div>
   <div class="container">
     <h1 style="font-size:50px;">骊珠洞天</h1>
     <div class="battle-section">
-      <h1 style="display:none;">战斗开始：你进入骊珠洞天，这里的妖气很重</h1>
-      <h1 id="round1" style="display:none;">第一回合：你发现了一只受伤的上古大妖，以你福气境三层的修为，你可以选择：
-        <button class="option-label option-a" data-next="after_attack_full_round1">A. 直接用全力攻击。</button>
-        <button class="option-label option-b" data-next="after_attack_weakness_round1">B. 先观察其伤势寻找弱点再攻击。</button>
-    </h1>
-    <h1 id="after_attack_full_round1" style="display:none;">第一回合选 A：你与大妖激烈对抗，虽凭借修为取胜但也受了轻伤，此时周围妖气更甚，你准备迎接新挑战。</h1>
-    <h1 id="after_attack_weakness_round1" style="display:none;">第一回合选 B：你发现其腿部有伤，攻击其腿部后轻松将其击杀，然而其死亡引发了一阵灵力波动，似乎有其他东西被吸引过来。</h1>
-    <h1 id="round2" style="display:none;">第二回合：你遇到了一个神秘的洞穴，你可以选择：
-        <button class="option-label option-c" data-next="after_enter_cave_round2">C. 进入洞穴探索。</button>
-        <button class="option-label option-d" data-next="after_pass_cave_round2">D. 绕过洞穴继续前进。</button>
-    </h1>
-    <h1 id="after_enter_cave_round2" style="display:none;">第二回合选 C：你在洞穴中发现了珍贵的宝物，但也惊动了守护宝物的怪物。</h1>
-    <h1 id="after_pass_cave_round2" style="display:none;">第二回合选 D：你继续前进，却发现前方的道路更加艰难。</h1>
-    <h1 style="display:none;">第三回合：暂无内容</h1>
-    <h1 style="display:none;">第四回合：暂无内容</h1>
-    <h1 id="round21" style="display:none;">第二回合：你遇到了一个神秘的洞穴，你可以选择：
-      <button class="option-label option-a1" data-next="111">C. 进入洞穴探索。</button>
-      <button class="option-label option-b1" data-next="222">D. 绕过洞穴继续前进。</button>
-  </h1>
-  <h1 id="111" style="display:none;">第二回合选 C：你在洞穴中发现了珍贵的宝物，但也惊动了守护宝物的怪物。</h1>
-  <h1 id="222" style="display:none;">第二回合选 D：你继续前进，却发现前方的道路更加艰难。</h1>
-    <h1 style="display:none;">第五回合：暂无内容</h1>
-    <h1 style="display:none;">第六回合：暂无内容</h1>
-    <h1 style="display:none;">第七回合：暂无内容</h1>
-        <h1 style="display:none;">第八回合：暂无内容</h1>
-        <h1 style="display:none;">第九回合：暂无内容</h1>
-        <h1 style="display:none;">第十回合：暂无内容</h1>
-        <h1 style="display:none;">第十一回合：暂无内容</h1>
-        <h1 style="display:none;">第十二回合：暂无内容</h1>
-        <h1 style="display:none;">第十三回合：暂无内容</h1>
-        <h1 style="display:none;">第十四回合：暂无内容</h1>
-        <h1 style="display:none;">第十五回合：暂无内容</h1>
-        <h1 style="display:none;">第十六回合：暂无内容</h1>
+      <h1 style="display:none;">踏入这骊珠洞天，仿若踏入了另一个世界。这里是长老们用法力制造的小世界，这里自成一个洞天，并且生活着一些修为境界与你相似的土著，
+        还有数不清的天才地宝。由于有着长老的守护，在这里的死亡不是真正的死亡。</h1>
+      <h1 style="display:none;">五彩光芒在云雾间穿梭，耳边是奇异的呼啸声，
+        脚下的土地都透着神秘。你深知，这里处处是机遇，也步步藏危机，必须谨慎。</h1>
+      <h1 style="display:none;">前行不久，你瞧见一丛散发着绚烂光芒的灵植。</h1>
+      <h1 id="select1" style="display:none;">你咬咬牙，决定冒险一试。刚伸手，周围光芒大盛，出现了一层透明禁制。此时可用灵力强行突破，但可能受伤；也可寻找禁制薄弱处化解。 
+        <button class="option-label option-a1" data-next="select11"> 灵力强行突破</button>
+        <button class="option-label option-b1" data-next="select12"> 寻找禁制薄弱处化解</button>
+      </h1>
+      <h1 id="select12" style="display:none;">你尝试寻找薄弱处，经过一番探查，发现禁制右下角有一丝细微的灵力波动。集中灵力攻击此处，禁制似有松动迹象。</h1>
+      <h1 id="select2" style="display:none;">就在灵植即将到手之际，一只形如飞鸟的守护灵物呼啸而来。它速度奇快，尖喙如剑。你可以闪避，也能尝试用结界抵挡。
+        <button class="option-label option-a2" data-next="select21">闪避</button>
+        <button class="option-label option-b2" data-next="select22">尝试用结界阻挡</button>
+      </h1>
+      <h1 id="select22" style="display:none;">你快速撑起结界，灵物的攻击震得结界嗡嗡作响。</h1>
+      <h1 id="select3" style="display:none;">趁此间隙，你思考对策。是用迷幻之术摆脱它，还是正面战斗夺取灵植？
+        <button class="option-label option-a3" data-next="select31">迷幻之术</button>
+        <button class="option-label option-b3" data-next="select32">正面战斗</button>
+      </h1>
+      <h1 id="select31" style="display:none;">正面战斗，你拼尽全力，打伤了守护灵物，使其速度大减。你施展师傅所传秘法，成功击杀守护灵物。灵物死亡时化为装备“笼中雀”，你将其收入囊中。</h1>
+      <h1 id="select32" style="display:none;">你施展迷幻之术，周围景色瞬间变幻。灵物陷入短暂迷惑，在它慌乱之时，你迅速冲向灵植。</h1>
+      <h1 style="display:none;">此时，灵植周围又现新变化。</h1>
+      <h1 style="display:none;">灵植周围浮现古老符文，这些符文似在考验你的心性。</h1>
+      <h1 style="display:none;">你静下心来，试图解读符文含义。脑海中灵光一闪，似乎摸到了些门道。</h1>
+      <h1 style="display:none;">你成功参悟符文，灵植化作一道流光融入你体内。  经验值增加1000.</h1>
+      <h1 style="display:none;">你感到力量在增长，同时，远处却传来一阵更强大的灵力波动，似有宝物现世。</h1>
+      <h1 style="display:none;">你向着波动源头赶去，沿途有不少小陷阱。</h1>
+      <h1 style="display:none;">你小心绕过，奈何陷阱复杂多样，你还是被一些小法术击中，但凭借自身恢复能力硬抗了下来。终于，你来到一处神秘山谷前，宝物气息正是从谷内传来。</h1>
+      <h1 id="select4"style="display:none;">山谷中迷雾重重，视线受阻。踏入迷雾，可能迷失方向；但绕开迷雾从边缘走，又怕错过谷内的核心宝物。
+        <button class="option-label option-a4" data-next="select41">踏入雾中</button>
+        <button class="option-label option-b4" data-next="select42">从边缘走</button>
+      </h1>
+      <h1 id="select41" style="display:none;">你毅然踏入迷雾，顿时天旋地转。凭借强大的神识，你努力辨别方向。突然，前方出现了若隐若现的身影，不知是敌是友。</h1>
+      <h1 id="select5" style="display:none;">你小心翼翼地靠近那若隐若现的身影，发现是一位身着古装的女子，她神色哀伤，似被迷雾所困。若你上去搭话，或许能知晓山谷秘密；若当作没看见继续前行，可能会错过关键信息。
+        <button class="option-label option-a5" data-next="select51">上去搭话</button>
+        <button class="option-label option-b5" data-next="select52">当作没看见</button>
+      </h1>
+      <h1 id="select51" style="display:none;">你上前询问，女子称她是此地守护者后裔，因宝物被邪恶力量觊觎，设下迷雾保护。若你愿帮忙，她可助你获取宝物，你决定与她合作。</h1>
+      <h1 style="display:none;">女子带着你在迷雾中穿梭，凭借她的指引，你们找到了邪恶力量的汇聚点。那是一团黑色的浓雾，散发着令人厌恶的气息。</h1>
+      <h1 style="display:none;">你们开始攻击黑色浓雾，它却不断反扑，释放出一道道黑暗法术。你与女子相互配合，尝试用净化之力驱散黑暗。</h1>
+      <h1 style="display:none;">你们施展净化之力，黑暗浓雾开始退缩。但它突然凝聚成一只巨大的黑手，朝你们抓来。</h1>
+      <h1 style="display:none;">你们拼尽全力，抵住了黑手的攻击。趁此机会，你施展强力仙法，对黑手的核心进行打击，它发出痛苦的咆哮，有消散迹象。</h1>
+      <h1 style="display:none;">随着邪恶力量的削弱，宝物的光芒在山谷中心闪耀。那是一颗散发着七彩光芒的珠子，蕴含着无尽的灵力。 获得装备：井中月。</h1>
+      <h1 style="display:none;">拿到珠子后，山谷开始震动，迷雾渐渐散去。女子告诉你，骊珠洞天因宝物现世发生了改变，可能有新的危险或机遇出现。</h1>
+      <h1 id="select6" style="display:none;">震动停止后，山谷一侧出现了一条新的通道。通道中传来阵阵古老的气息，不知通向何方，是探索还是返回，你陷入思考。
+        <button class="option-label option-a6" data-next="select61">探索</button>
+        <button class="option-label option-b6" data-next="select62">返回</button>
+      </h1>
+      <h1 id="select61" style="display:none;">你决定探索新通道，女子也跟了上来。通道内墙壁上刻满了古老的壁画，讲述着骊珠洞天的前世今生，似乎在指引着你们。</h1>
+      <h1 style="display:none;">仔细观察壁画，你发现其中一幅画着一个神秘的祭坛，与通道深处的灵力波动相似。这或许是下一个关键地点，你们加快脚步。</h1>
+      <h1 id="select7"style="display:none;">来到祭坛前，发现有几具傀儡守护。它们力大无穷，且不惧普通仙法。你和女子商量，是用计谋引开它们，还是合力强攻。
+        <button class="option-label option-a7" data-next="select71">计谋引开</button>
+        <button class="option-label option-b7" data-next="select72">合力强攻</button>
+      </h1>
+      <h1 id="select71" style="display:none;">你们决定实施引开之计，你吸引傀儡注意力，女子趁机绕到祭坛后方寻找控制机关。</h1>
+      <h1 style="display:none;">女子成功找到机关，暂时控制了傀儡。你们来到祭坛中央，发现这里有一个特殊的插槽，似乎与七彩珠子有关。</h1>
+      <h1 style="display:none;">你将之前获得的井中月放入插槽，祭坛爆发出强烈光芒。周围空间开始扭曲，你们被传送到了一个陌生的地方，这里充满了未知的挑战。 失去装备：井中月。</h1>
+      <h1 style="display:none;">你们身处陌生之地，四周是荒废的古殿，散发着阴森气息。空中有奇异的光影闪烁，似是某种古老禁制，一不小心就会触发。</h1>
+      <h1 style="display:none;">进入一座古殿，殿内布满了蛛丝般的灵力丝线。</h1>
+      <h1 style="display:none;">你尝试顺着丝线摸索，发现它们汇聚到一尊古老的石像处。石像的眼睛似有魔力，盯着它久了，竟有眩晕之感。</h1>
+      <h1 style="display:none;">女子发现石像底座有机关，可开启它或许会释放出石像内封印的东西。你们决定开启，瞬间，一道强大的灵力从石像中涌出。</h1>
+      <h1 style="display:none;">原来是一个灵体，它自称是古殿的守护灵。</h1>
+      <h1 style="display:none;">守护灵说，古殿的主人在一次探险中被同行之人背叛，危急时刻，主人将其困在了这方天地，但主人也身死道消。</h1>
+      <h1 style="display:none;">守护灵因为自身原因，无法出入古殿，它请你们帮古殿主人复仇，它会给予你们丰厚的回报。</h1>
+      <h1 style="display:none;">守护灵告诉你们，叛徒在这片区域留下了特殊的标记。你们在周围寻找，发现了一些隐晦的符文，似乎指向了一座地下迷宫。</h1>
+      <h1 style="display:none;">地下迷宫阴暗潮湿，弥漫着一股腐臭气味。墙壁上有磷火闪烁，隐约能看到一些白骨。迷宫中岔路众多，极易迷失。</h1>
+      <h1 id="select8" style="display:none;">在一条岔路中，你们遭遇了流沙陷阱。
+        <button class="option-label option-a8" data-next="select81">奋力挣扎</button>
+        <button class="option-label option-b8" data-next="select82">施展定身术</button>
+      </h1>
+      <h1 id="select82" style="display:none;">你施展定身术，和女子一起慢慢从流沙中脱身。继续前行，听到了一阵低沉的咆哮声，像是某种凶猛的怪物在附近。</h1>
+      <h1 style="display:none;">一只浑身长满尖刺的巨兽出现在眼前，它的目光锁定了你们。战斗一触即发，你们必须找到它的弱点才能取胜。</h1>
+      <h1 style="display:none;">经过一番周旋，你们发现巨兽的腹部是其弱点。你们合力攻击，巨兽虽凶猛，但在你们的攻击下渐渐不支，最终倒下。</h1>
+      <h1 style="display:none;">在巨兽守护的地方，你们找到了叛徒的线索 —— 一块带有特殊印记的玉佩。灵体感知到玉佩后，指引你们前往最终之地。</h1>
+      <h1 style="display:none;">你们来到一座宏伟的地下宫殿，叛徒就在其中。宫殿中布满了各种防御禁制，需要小心破解才能接近叛徒。</h1>
+      <h1 style="display:none;">你们花费了不少精力，终于突破了层层禁制。叛徒察觉到你们的到来，一场大战在所难免，这将是一场艰难的对决。</h1>
+      <h1 style="display:none;">叛徒实力强大，法术诡异。你们与他打得难解难分，你和女子相互配合，渐占上风。关键时刻，叛徒拿出了一件邪器。</h1>
+      <h1 id="select9" style="display:none;">邪器散发出的黑暗力量侵蚀着你们的灵力。你们必须先破坏邪器，可这需要冒很大的风险，稍有不慎就会被其力量反噬。
+        <button class="option-label option-a9" data-next="select91">我是主角</button>
+        <button class="option-label option-b9" data-next="select92">偷袭</button>
+      </h1>
+      <h1 id="select92" style="display:none;">你们拼尽全力，趁叛徒施展大招的间隙，成功破坏了邪器。叛徒受此影响，露出破绽，你们抓住机会给予他致命一击。</h1>
+      <h1 style="display:none;">叛徒被消灭，灵体重获自由。作为感谢，它将这里的宝藏和一种特殊的修炼法门传授给你们。骊珠洞天的冒险，至此圆满结束。 获得功法：？？ 经验值增加5000</h1>
     </div>
   </div>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-message"></p>
+        <button id="modal-confirm">确定</button>
+    </div>
+</div>
   <div class="big-button">
     <span>继续</span>
   </div>
   <img class="top-right-image" src="../static/return_image.png" alt="Top Right Image" style="position: absolute; top: 0; right: 0;cursor: pointer;">
-  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;cursor: pointer;">
+  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;cursor: pointer;" onclick="showSettings()">
+  <div id="experience-bar"></div>
+    <script src="../static/JavaScript/JQuery.js"></script>
   <script>
     const bigButton = document.querySelector('.big-button');
     const container = document.querySelector('.container');
 
+// 获取所有具有特定类名的按钮
+    const optionButtons = document.querySelectorAll('.option-label');
+
+    // 遍历每个按钮并添加点击事件监听器
+    optionButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        let targetUrl = '';
+        if (button.classList.contains('option-a1')) {
+          // 设置模态框中的消息内容
+          document.getElementById('modal-message').textContent = '灵力强行突破，遭到禁制反击，被逐出洞天。';
+            // 显示模态框
+            document.getElementById('myModal').style.display = 'block';
+            // 给确定按钮添加点击事件监听器
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                // 隐藏模态框
+                document.getElementById('myModal').style.display = 'none';
+                // 进行页面跳转
+                if (targetUrl) {
+                    window.location.href = targetUrl;
+                }
+            });
+        } else if (button.classList.contains('option-b4')) {
+            document.getElementById('modal-message').textContent = '你绕开迷雾，走向了出口，为保安全，你离开了骊珠洞天。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        } else if (button.classList.contains('option-b5')) {
+            document.getElementById('modal-message').textContent = '没想到她是此地的守护者，她误认为你是邪祟，从背后偷袭将你击杀。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        } else if (button.classList.contains('option-b6')) {
+            document.getElementById('modal-message').textContent = '安全起见，你选择原路返回，离开了骊珠洞天。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        } else if (button.classList.contains('option-b7')) {
+            document.getElementById('modal-message').textContent = '你们合力一击，没想到在傀儡身上没有所留任何伤痕。傀儡的防御十分强大，无论你们怎么进攻都伤不了他一丝一亩。鏖战多时，你的体力逐渐消耗殆尽，被傀儡抓住机会，一击毙命。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        } else if (button.classList.contains('option-a8')) {
+            document.getElementById('modal-message').textContent = '你不断挣扎，越陷越深，你尝试施展法术脱离，可没想到这流沙竟让你无法调动法力，最终你陷入流沙中窒息身亡。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        } else if (button.classList.contains('option-a9')) {
+            document.getElementById('modal-message').textContent = '不知某种神秘力量的干扰，在叛徒施展大招的间隙，你发现你只能眼睁睁地看着，最终你惨死在叛徒的大招之下。';
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById('modal-confirm').addEventListener('click', () => {
+                targetUrl = '/dungeon';
+                document.getElementById('myModal').style.display = 'none';
+                if (targetUrl) {
+                    window.location.href = '/dungeon';
+                }
+            });
+        }
+      });
+    });
+    
     // 为所有的选项按钮添加点击事件监听器
     function addOptionListeners(currentRound) {
         const optionButtons = currentRound.querySelectorAll('.option-label');
@@ -397,25 +636,71 @@
         history.back();
       }
     });
-    document.addEventListener('DOMContentLoaded', function () {
-    const boxImages = document.querySelectorAll('.box-img');
-    const urls = [
-        '../templates/xiulianjiemian.html', // Replace with the actual URL for the cultivate box
-        '../templates/skill.html', // Replace with the actual URL for the techniques box
-        '../templates/dungeon.html', // Replace with the actual URL for the dungeon box
-        '../templates/beibao.html' // Replace with the actual URL for the backpack box
-    ];
-    boxImages.forEach((img, index) => {
-        img.addEventListener('click', function () {
-            window.location.href = urls[index];
-        });
-    });
-});
+     // 境界显示功能
+        function updateRealmDisplay(levelName) {
+          document.getElementById('realm-value').textContent = levelName;
+        }
+      
 
-const bottomRightImage = document.querySelector('.bottom-right-image');
-    bottomRightImage.addEventListener('click', function() {
-        window.location.href = 'settings.html';
-    });
+     function toCultivate() {
+            window.location.href='/cultivate'
+        }
+        function toSkill() {
+            window.location.href='/skill'
+        }
+        function toDungeon(){
+          window.location.href='/dungeon'
+        }
+        function toBag(){
+          window.location.href='/bag'
+        }
+        function showSettings() {
+            window.location.href='/settings'
+        }
+        window.onload = function() {
+            $.ajax({
+                url:'/return_talent',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('display-root_bone').textContent = res.root_bone
+                    document.getElementById('display-charm').textContent = res.charm
+                    document.getElementById('display-family_back_ground').textContent = res.family_back_ground
+                    document.getElementById('display-insight').textContent = res.insight
+                    document.getElementById('display-fate').textContent = res.fate
+                    document.getElementById('display-physique').textContent = res.physique
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+            $.ajax({
+                url: '/cultivation/get_player_info',
+                type: 'get',
+                success: function (res) {
+                  if (res.success) {
+                    const levelName = res.level_name;
+                    updateRealmDisplay(levelName);
+                  } else {
+                alert('获取玩家信息失败：' + res.error);
+                }
+              },
+                error: function (res) {
+                  console.error('Error:', res);
+                }
+            });
+            $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent = Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+        };
   </script>
 </body>
 

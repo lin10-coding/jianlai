@@ -177,8 +177,9 @@
     }
 
  .box-img {
-    width: 100%;
-    height: 100%;
+    width: 100px;
+            height: 100px;
+            margin: 5px;
     cursor: pointer;
     }
 
@@ -200,25 +201,39 @@
      opacity: 1;
  }
 
-   .new-component {
-      position: relative;
-      top: 10%; /* 距离顶部占容器高度的10%，可根据需求调整 */
-      left: 30%; /* 距离左侧占容器宽度的5%，可根据需求调整 */
-      display: inline-block;
-      text-align: left;
-      font-size: 200%;
-    }
+   .characteristic {
+  width: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
- .new-component p {
-      display: flex;
-      flex-wrap: wrap;
-      width: 280%;
-    }
+        .header {
+            position: relative;
+            top: 0;
+            left: 0%;
+            text-align: center;
+            padding: 10px 0;
+            background-image: url('../static/bg_header.png');
+            background-size: 20% 50%;
+            background-position: center;
+            border: none;
+            background-repeat: no-repeat; /* 添加这一行，使背景图片不重复显示 */
+            background-color: transparent;
+        }
 
- .new-component p span {
-      display: inline-block;
-      width: 33%;
-    }
+        .content-group {
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 100px;
+            row-gap: 10px;
+        }
 
    .big-button:active {
      transform: scale(0.95);
@@ -232,7 +247,40 @@
         padding: 0.5% 1%;
         font-size: 50%;
     }
+#experience-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%; /* 设置宽度为100%，使其与页面宽度一致 */
+      height: 10px;
+      background-color: gray;
+      border-radius: 5px;
+    }
+    .realm-display {
+    position: flex;
+    height: 50px;
+    width: 200px;
+    margin-top: -10%;
+    margin-left: 40%;
+    /* 使用transform实现水平居中 */
+    transform: translateX(-50%);
+    background-image: url('../static/realm_bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.battle-value更高的z-index值，假设.battle-value的z-index为默认值0 */
+    z-index: 2;
+}
 
+.realm-value {
+    font-size: 20px;
+    position: relative;
+    top: 20%;
+    left: 40%;
+    color: rgb(0, 0, 0);
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.realm-display更低的z-index值 */
+    z-index: 1;
+}
   </style>
 </head>
 
@@ -241,41 +289,47 @@
     <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
     <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
     <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
-    <div class="battle-value">1000</div>
+    <div class="battle-value" id="fighting_strength"></div>
+        <!-- 新增的境界显示部分 -->
+    <div class="realm-display">
+      <span class="realm-value" id="realm-value">境界名称</span>
+    </div>
     <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
     <div class="box-container">
       <div class="box-row">
         <div>
-          <img class="box-img" src="../static/cultivate_box.png" alt="Box 1">
-          <div class="box-caption">修炼</div>
+          <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="toCultivate()">
+          <div class="box-caption" >修炼</div>
         </div>
         <div>
-          <img class="box-img" src="../static/techniques_box.png" alt="Box 2">
+          <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
           <div class="box-caption">功法</div>
         </div>
       </div>
       <div class="box-row">
         <div>
-          <img class="box-img" src="..//static/dungeon_box.png" alt="Box 3">
+          <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
           <div class="box-caption">副本</div>
         </div>
         <div>
-         <img class="box-img" src="../static/backpack_box.png" alt="Box 4">
+          <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
           <div class="box-caption">背包</div>
         </div>
       </div>
     </div>
   </div>
-  <div class="new-component">
-    <p>
-      <span>根骨:7</span>
-      <span>家境:5</span>
-      <span>悟性:2</span>
-      <span>机缘:2</span>
-      <span>魅力:3</span>
-      <span>体魄:1</span>
-    </p>
-  </div>
+  <div class="header">
+        <div class="characteristic">
+            <div class="content-group">
+                <div class="input-group">根骨: <span id="display-root_bone"></span></div>
+                <div class="input-group">魅力: <span id="display-charm"></span></div>
+                <div class="input-group">家境: <span id="display-family_back_ground">0</span></div>
+                <div class="input-group">悟性: <span id="display-insight"></span></div>
+                <div class="input-group">机缘: <span id="display-fate"></span></div>
+                <div class="input-group">体魄: <span id="display-physique"></span></div>
+            </div>
+        </div>
+    </div>
   <div class="container">
     <h1 style="font-size:50px;">落魄山</h1>
     <div class="battle-section">
@@ -322,12 +376,36 @@
     <span>继续</span>
   </div>
   <img class="top-right-image" src="../static/return_image.png" alt="Top Right Image" style="position: absolute; top: 0; right: 0;cursor: pointer;">
-  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;cursor: pointer;">
-
+  <img class="bottom-right-image" src="../static/setup_image.png" alt="Bottom Right Image" style="position: absolute; bottom: 0; right: 0;cursor: pointer;" onclick="showSettings()">
+<!-- 经验条：max表示当前等级的最大经验值，value表示当前经验值，显示在页面最下方-->
+  <meter min="0" max="500" value="200" id="experience-bar"></meter>
+  <script src="../static/JavaScript/JQuery.js"></script>
   <script>
     const bigButton = document.querySelector('.big-button');
     const container = document.querySelector('.container');
 
+// 获取所有具有特定类名的按钮
+    const optionButtons = document.querySelectorAll('.option-label');
+
+    // 遍历每个按钮并添加点击事件监听器
+    optionButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        let targetUrl = '';
+        if (button.classList.contains('option-c')) {
+          alert('副本闯关失败，将回到副本选择页面。');
+          targetUrl = '/dungeon';
+        } else if (button.classList.contains('option-d')) {
+          alert('副本闯关失败，将回到副本选择页面。');
+          targetUrl = '/dungeon';
+        }
+
+        // 如果设置了目标页面URL，就进行页面跳转
+        if (targetUrl) {
+          window.location.href = targetUrl;
+        }
+      });
+    });
+    
     // 为所有的选项按钮添加点击事件监听器
     function addOptionListeners(currentRound) {
         const optionButtons = currentRound.querySelectorAll('.option-label');
@@ -402,25 +480,72 @@
         history.back();
       }
     });
-    document.addEventListener('DOMContentLoaded', function () {
-    const boxImages = document.querySelectorAll('.box-img');
-    const urls = [
-        '../templates/xiulianjiemian.html', // Replace with the actual URL for the cultivate box
-        '../templates/skill.html', // Replace with the actual URL for the techniques box
-        '../templates/dungeon.html', // Replace with the actual URL for the dungeon box
-        '../templates/beibao.html' // Replace with the actual URL for the backpack box
-    ];
-    boxImages.forEach((img, index) => {
-        img.addEventListener('click', function () {
-            window.location.href = urls[index];
-        });
-    });
-});
 
-const bottomRightImage = document.querySelector('.bottom-right-image');
-    bottomRightImage.addEventListener('click', function() {
-        window.location.href = 'settings.html';
-    });
+
+     function toCultivate() {
+            window.location.href='/cultivate'
+        }
+        function toSkill() {
+            window.location.href='/skill'
+        }
+        function toDungeon(){
+          window.location.href='/dungeon'
+        }
+        function toBag(){
+          window.location.href='/bag'
+        }
+        function updateRealmDisplay(levelName) {
+          document.getElementById('realm-value').textContent = levelName;
+        }
+        function showSettings() {
+            window.location.href='/settings'
+        }
+        window.onload = function() {
+            $.ajax({
+                url:'/return_attributions',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('display-root_bone').textContent = res.root_bone
+                    document.getElementById('display-charm').textContent = res.charm
+                    document.getElementById('display-family_back_ground').textContent = res.family_back_ground
+                    document.getElementById('display-insight').textContent = res.insight
+                    document.getElementById('display-fate').textContent = res.fate
+                    document.getElementById('display-physique').textContent = res.physique
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+            // 获取玩家等级信息并更新“境界”显示
+            $.ajax({
+                url: '/cultivation/get_player_info',
+                type: 'get',
+                success: function (res) {
+                  if (res.success) {
+                    const levelName = res.level_name;
+                  updateRealmDisplay(levelName);
+                  } else {
+                  alert('获取玩家信息失败：' + res.error);
+                  }
+                },
+                error: function (res) {
+                  console.error('Error:', res);
+                }
+            });
+
+            $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent = Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+        };
   </script>
 </body>
 
