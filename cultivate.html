@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修炼界面</title>
+    <style>
+        /* 全局设置 */
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('../static/dabeijing.png');
+            background-size: cover;
+        }
+
+        .character-info {
+            position: absolute;
+            top: 200px;
+            left: 100px;
+            transform: scale(1.5);
+        }
+
+        .character-avatar {
+            width: 200px;
+            height: 200px;
+            left: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .battle-value {
+            font-size: 30px;
+            position: relative;
+            top: 20px;
+            left: 100px;
+            color: rgb(0, 0, 0);
+        }
+
+        .avatar-bg-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            z-index: -1;
+        }
+
+        .avatar-bg-top {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .battle-value-bg {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: -2;
+        }
+
+        .box-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-top: 5%;
+            width: 80%;
+            height: 50%;
+        }
+
+        .box-row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 5%;
+            gap: 0;
+        }
+
+        .box-img {
+            width: 85%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .box-img:hover {
+            transform: scale(1.2);
+        }
+
+        .box-caption {
+            font-size: 1vw;
+            text-align: center;
+            margin-top: -1vw;
+        }
+
+        /* 右侧主区域 */
+        .main-area {
+            position: absolute;
+            top: 10%;
+            right: 20%;
+            width: 65%;
+            height: 90%;
+            bottom: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-area img {
+            width: 80%;
+            height: auto;
+            border-radius: 1%;
+        }
+
+        /* 拜师、传承、闭关、天赋、炼丹 */
+        .baishi, .chuancheng, .biguan, .tianfu, .liandan {
+            position: absolute;
+        }
+
+        .baishi img, .chuancheng img, .biguan img, .tianfu img, .liandan img {
+            width: 60%;
+            height: 50%;
+            margin-top: 2%;
+        }
+
+        .baishi { top: 45%; left: 25%; }
+        .chuancheng { top: 20%; left: 30%; }
+        .biguan { top: 12%; left: 47%; }
+        .tianfu { top: 22%; left: 67%; }
+        .liandan { top: 46%; left: 72%; }
+
+        .baishi img, .chuancheng img, .biguan img, .tianfu img, .liandan img {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .baishi img:hover, .chuancheng img:hover, .biguan img:hover, .tianfu img:hover, .liandan img:hover {
+            transform: scale(1.2);
+        }
+
+        .baishi span, .chuancheng span, .biguan span, .tianfu span, .liandan span {
+            pointer-events: none;
+        }
+
+        .attribute-bar div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4%;
+        }
+
+        /* 弹窗样式 */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .popup input {
+            width: 80%;
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .popup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .blessing-level {
+            position: absolute;
+            bottom: 25%;
+            left: 51%;
+            transform: translateX(-50%);
+            font-size: 1.25vw;
+            color: #1b1b1b;
+            cursor: pointer;
+        }
+
+        .characteristic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 40%;
+            text-align: center;
+            padding: 10px 0;
+            background-image: url('../static/bg_header.png');
+            background-size: 80% 90%;
+            background-position: center;
+            background-color: transparent;
+        }
+
+        .content-group {
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 100px;
+            row-gap: 10px;
+        }
+
+        .return-button {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 71px;
+            background-image: url('../static/return_image.png');
+            background-size: cover;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .settings-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            background-image: url('../static/lock.png');
+            background-size: contain;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            background-color: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .settings-button:hover {
+            transform: scale(1.2);
+        }
+
+        /* 新增的经验值显示样式 */
+        .experience-display {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5vw;
+            color: #1b1b1b;
+        }
+
+        /* 底部经验条 */
+        #experience-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-color: gray;
+            border-radius: 5px;
+        }
+
+        /* 升级弹窗样式 */
+        #level-up-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        #level-up-popup input {
+            width: 80%;
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        #level-up-popup button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .realm-display {
+    position: flex;
+    height: 50px;
+    width: 200px;
+    margin-top: 10%;
+    margin-left: 50%;
+    /* 使用transform实现水平居中 */
+    transform: translateX(-50%);
+    background-image: url('../static/realm_bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.battle-value更高的z-index值，假设.battle-value的z-index为默认值0 */
+    z-index: 2;
+}
+
+.realm-value {
+    font-size: 20px;
+    position: relative;
+    top: 20%;
+    left: 40%;
+    color: rgb(0, 0, 0);
+    /* 设置合适的z-index值，确保层级关系正确，这里设置比.realm-display更低的z-index值 */
+    z-index: 1;
+}
+    </style>
+</head>
+<body>
+    <!-- 属性条 -->
+    <div class="header">
+        <div class="characteristic">
+            <div class="content-group">
+                <div class="input-group">根骨: <span id="display-root_bone"></span></div>
+                <div class="input-group">魅力: <span id="display-charm"></span></div>
+                <div class="input-group">家境: <span id="display-family_back_ground"></span></div>
+                <div class="input-group">悟性: <span id="display-insight"></span></div>
+                <div class="input-group">机缘: <span id="display-fate"></span></div>
+                <div class="input-group">体魄: <span id="display-physique"></span></div>
+            </div>
+        </div>
+    </div>
+    <div class="character-info">
+        <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+        <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+        <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+        <div class="battle-value" id="fighting_strength"></div>
+            <!-- 新增的境界显示部分 -->
+    <div class="realm-display">
+    <span class="realm-value" id="realm-value">境界名称</span>
+    </div>
+        <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+        <div class="box-container">
+            <div class="box-row">
+                <div>
+                    <img class="box-img" src="../static/home.png" alt="Box 1" onclick="toHome()">
+                    <div class="box-caption">首页</div>
+                </div>
+                <div>
+                    <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
+                    <div class="box-caption">功法</div>
+                </div>
+            </div>
+            <div class="box-row">
+                <div>
+                    <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
+                    <div class="box-caption">副本</div>
+                </div>
+                <div>
+                    <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
+                    <div class="box-caption">背包</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="settings-button" onclick="toSettings()"></button>
+    <button class="return-button" onclick="goBack()"></button>
+    <!-- 右侧主区域 -->
+    <div class="main-area">
+        <img src="../static/beijing.png" alt="Meditation Image">
+        <div class="baishi">
+            <img src="../static/baishi.png" alt="Baishi Image" onclick="navigate('baishi')">
+            <span class="baishi.txt">拜师</span>
+        </div>
+        <div class="chuancheng">
+            <img src="../static/chuancheng.png" alt="Chuancheng Image" onclick="showPopup('chuancheng')">
+            <span class="chuancheng.txt">传承</span>
+        </div>
+        <div class="biguan">
+            <img src="../static/biguan.png" alt="Biguan Image" onclick="showPopup('biguan')">
+            <span class="biguan.txt">闭关</span>
+        </div>
+        <div class="tianfu">
+            <img src="../static/tianfu.png" alt="Tianfu Image" onclick="showPopup('tianfu')">
+            <span class="tianfu.txt">天赋</span>
+        </div>
+        <div class="liandan">
+            <img src="../static/liandan.png" alt="Liandan Image" onclick="navigate('liandan')">
+            <span class="liandan.txt">炼丹</span>
+        </div>
+    </div>
+    <!-- 等级显示 -->
+    <span class="blessing-level" onclick="showLevelUpPopup()">等级名称</span>
+
+    <!-- 新增的经验值显示 -->
+    <div class="experience-display">
+        经验值：<span id="current-exp"></span>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="popup" id="popup">
+        <p id="popup-text"></p>
+        <div id="popup-inputs"></div>
+        <div id="popup-buttons">
+            <button onclick="confirmAction()">确定</button>
+            <button onclick="closePopup()">取消</button>
+        </div>
+    </div>
+
+    <!-- 升级弹窗 -->
+    <div class="popup" id="level-up-popup">
+        <p>请输入想要升级的等级数量：</p>
+        <input type="number" id="level-increment-input" min="1" placeholder="输入升级等级数">
+        <div id="level-up-buttons">
+            <button onclick="confirmLevelUp()">升级</button>
+            <button onclick="closeLevelUpPopup()">取消</button>
+        </div>
+    </div>
+
+    <!-- 经验条 -->
+    <meter min="0" max="500" value="200" id="experience-bar"></meter>
+
+    <script src="../static/JavaScript/JQuery.js"></script>
+    <script>
+        // 全局变量
+        var currentType = '';
+        var levelName = ''; // 新增变量，存储等级名称
+
+        function toSettings() {
+            window.location.href = '/settings';
+        }
+
+        // 导航函数
+        function navigate(page) {
+            if (page === 'cultivate') {
+                window.location.href = '/cultivate';
+            } else if (page === 'techniques') {
+                window.location.href = '/skill';
+            } else if (page === 'dungeon') {
+                window.location.href = '/dungeon';
+            } else if (page === 'backpack') {
+                window.location.href = '/bag';
+            } else if (page === 'liandan') {
+                window.location.href = '/alchemy';
+            } else if (page === 'baishi') {
+                window.location.href = '/apprentice';
+            }
+        }
+
+        // 显示弹窗
+        function showPopup(type) {
+            currentType = type;
+            var popup = document.getElementById('popup');
+            var popupText = document.getElementById('popup-text');
+            var popupInputs = document.getElementById('popup-inputs');
+
+            if (type === 'chuancheng') {
+                popupText.innerText = '已有传承';
+                popupInputs.innerHTML = '<input type="text" id="chuancheng-input" placeholder="输入传承内容">';
+            } else if (type === 'biguan') {
+                popupText.innerText = '请选择闭关时间';
+                popupInputs.innerHTML = '<input type="number" id="biguan-input" placeholder="输入闭关时间（天）">';
+            } else if (type === 'tianfu') {
+                popupText.innerText = '已有天赋';
+                popupInputs.innerHTML = '<input type="text" id="tianfu-input" placeholder="输入天赋内容">';
+            }
+
+            popup.style.display = 'block';
+        }
+
+        // 确认操作
+        function confirmAction() {
+            var popup = document.getElementById('popup');
+
+            if (currentType === 'chuancheng') {
+                var chuancheng = document.getElementById('chuancheng-input').value;
+                alert('传承内容: ' + chuancheng);
+            } else if (currentType === 'biguan') {
+                var biguan = document.getElementById('biguan-input').value;
+                if (!biguan || biguan <= 0) {
+                    alert('请输入有效的闭关时间');
+                    return;
+                }
+                // 发送闭关时间到后端
+                sendCultivationTime(biguan);
+            } else if (currentType === 'tianfu') {
+                var tianfu = document.getElementById('tianfu-input').value;
+                alert('天赋内容: ' + tianfu);
+            }
+
+            popup.style.display = 'none';
+        }
+
+        // 发送闭关时间到后端的函数
+        function sendCultivationTime(duration_days) {
+            $.ajax({
+                url: '/cultivation/start',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    duration_days: duration_days
+                }),
+                success: function(res) {
+                    if (res.message) {
+                        alert('修炼成功！新的经验值为：' + res.new_exp);
+                        // 更新经验值显示
+                        updatePlayerExperience(res.new_exp);
+                    } else if (res.error) {
+                        alert('修炼失败：' + res.error);
+                    }
+                },
+                error: function(err) {
+                    console.error('Error:', err);
+                    alert('修炼过程中发生错误，请稍后重试');
+                }
+            });
+        }
+
+        // 更新经验值显示的函数
+        function updatePlayerExperience(newExp) {
+            document.getElementById('current-exp').textContent = newExp;
+        }
+
+        // 关闭弹窗
+        function closePopup() {
+            var popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
+        // 点击弹窗外部关闭弹窗
+        window.onclick = function(event) {
+            var popup = document.getElementById('popup');
+            var levelUpPopup = document.getElementById('level-up-popup');
+            if (event.target == popup) {
+                popup.style.display = 'none';
+            }
+            if (event.target == levelUpPopup) {
+                levelUpPopup.style.display = 'none';
+            }
+        }
+
+        function toCultivate() {
+            window.location.href = '/cultivate';
+        }
+        function toSkill() {
+            window.location.href = '/skill';
+        }
+        function toDungeon(){
+            window.location.href = '/dungeon';
+        }
+        function toBag(){
+            window.location.href = '/bag';
+        }
+        function toHome() {
+            window.location.href = '/home';
+        }
+
+        // 显示升级弹窗
+        function showLevelUpPopup() {
+            document.getElementById('level-up-popup').style.display = 'block';
+        }
+
+        // 关闭升级弹窗
+        function closeLevelUpPopup() {
+            document.getElementById('level-up-popup').style.display = 'none';
+        }
+
+        // 确认升级
+        function confirmLevelUp() {
+            var levelIncrement = document.getElementById('level-increment-input').value;
+            if (!levelIncrement || levelIncrement <= 0) {
+                alert('请输入有效的升级等级数量');
+                return;
+            }
+
+            // 发送升级请求到后端
+            $.ajax({
+                url: '/level_up/upgrade',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    level_increment: levelIncrement
+                }),
+                success: function(res) {
+                    if (res.message) {
+                        alert(res.message + '！新的等级为：' + res.new_level + '，剩余经验值：' + res.remaining_exp);
+                        // 更新等级和经验值显示
+                        updatePlayerLevel(res.new_level);
+                        updatePlayerExperience(res.remaining_exp);
+                    } else if (res.error) {
+                        alert('升级失败：' + res.error);
+                    }
+                    $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent =  Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+                    closeLevelUpPopup();
+                },
+                error: function(err) {
+                    console.error('Error:', err);
+                    alert('升级过程中发生错误，请稍后重试');
+                    closeLevelUpPopup();
+                }
+            });
+        }
+
+        // 更新玩家等级显示的函数
+        function updatePlayerLevel(newLevel) {
+            // 更新等级名称
+            $.ajax({
+                // 更新玩家等级显示的函数
+                url: '/cultivation/get_level_name',
+                type: 'GET',
+                data: { level: newLevel },
+                success: function(res) {
+                    if (res.success) {
+                        levelName = res.level_name;
+                        document.querySelector('.blessing-level').textContent = levelName;
+                        document.getElementById('realm-value').textContent = levelName;
+                    } else {
+                        alert('获取等级名称失败：' + res.error);
+                    }
+                },
+                error: function(err) {
+                    console.error('Error:', err);
+                }
+            });
+        }
+
+        window.onload = function() {
+            $.ajax({
+                url:'/return_attributions',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('display-root_bone').textContent = res.root_bone;
+                    document.getElementById('display-charm').textContent = res.charm;
+                    document.getElementById('display-family_back_ground').textContent = res.family_back_ground;
+                    document.getElementById('display-insight').textContent = res.insight;
+                    document.getElementById('display-fate').textContent = res.fate;
+                    document.getElementById('display-physique').textContent = res.physique;
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            });
+            $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent = Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            });
+            // 获取并显示玩家的经验值和等级
+            $.ajax({
+                url:'/cultivation/get_player_info',
+                type:'get',
+                success:function(res) {
+                    if (res.success) {
+                        document.getElementById('current-exp').textContent = res.current_exp;
+                        levelName = res.level_name; // 获取等级名称
+                        document.querySelector('.blessing-level').textContent = levelName; // 显示等级名称
+                        document.getElementById('realm-value').textContent = levelName;
+                    } else {
+                        alert('获取玩家信息失败：' + res.error);
+                    }
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

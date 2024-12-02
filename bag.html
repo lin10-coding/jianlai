@@ -1,0 +1,406 @@
+<!DOCTYPE html> 
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背包界面</title>
+    <style>
+        /* 全局设置 */
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background-image: url('../static/dabeijing.png');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* 跳转按钮样式 */
+        .navigation-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 左侧角色信息区域 */
+        .character-info {
+            position: absolute;
+            top: 200px;
+            left: 100px;
+            transform: scale(1.5);
+        }
+
+        .character-avatar {
+            width: 200px;
+            height: 200px;
+            left: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .battle-value {
+            font-size: 30px;
+            position: relative;
+            top: 20px;
+            left: 100px;
+            color: rgb(0, 0, 0);
+        }
+
+        .avatar-bg-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            z-index: -1;
+        }
+
+        .avatar-bg-top {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .battle-value-bg {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: -2;
+        }
+
+        /* 右侧背包界面 */
+        .zhankaibeibao {
+            position: fixed;
+            top: 10%;
+            right: 4%;
+            width: 50%;
+            height: 80%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+        }
+
+        /* 顶部按钮样式 */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 10px;
+            z-index: 2;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ccc;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #aaa;
+        }
+
+        .tab-button.active {
+            background-color: #888;
+            color: white;
+        }
+
+        /* 滑动容器样式 */
+        .scroll-container {
+            width: 100%;
+            height: calc(100% - 50px); /* 减去按钮的高度 */
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+            align-content: flex-start;
+            position: relative;
+        }
+
+        .item {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            z-index: 1000;
+            width: 300px;
+        }
+
+        .nav-button {
+        cursor: pointer; /* 添加这个属性 */
+    }
+
+        .popup button {
+            margin: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* 底部经验条 */
+        #experience-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%; /* 设置宽度为100%，使其与页面宽度一致 */
+            height: 10px;
+            background-color: gray;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="character-info">
+        <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+        <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+        <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+        <div class="battle-value" id="fighting_strength"></div>
+        <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+
+    </div>
+
+    <!-- 跳转按钮 -->
+    <div class="navigation-buttons">
+        <img class="nav-button" src="../static/return_image.png" alt="返回" onclick="goBack()">
+    </div>
+
+    <!-- 右侧背包界面 -->
+    <div class="zhankaibeibao">
+        <!-- 顶部三个按钮 -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('equipment')">装备</button>
+            <button class="tab-button" onclick="switchTab('techniques')">功法</button>
+            <button class="tab-button" onclick="switchTab('elixirs')">丹药</button>
+        </div>
+
+
+        <!-- 滑动容器 -->
+        <div class="scroll-container" id="item-container">
+            <!-- 物品将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+
+    </div>
+<!-- 经验条：max表示当前等级的最大经验值，value表示当前经验值，显示在页面最下方-->
+  <meter min="0" max="500" value="200" id="experience-bar"></meter>
+    <script>
+
+
+        function goBack() {
+            history.back();
+        }
+
+       function switchTab(tabName) {
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // event.target.classList.add('active');
+    const itemContainer = document.getElementById('item-container');
+    itemContainer.innerHTML = '<p>加载中...</p>';
+
+    fetch('/get_items')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const items = data[tabName];
+                itemContainer.innerHTML = '';
+                items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.innerHTML = `<img src="${item.img}" alt="${item.name}" data-id="${item.name}" data-type="${tabName}">`;
+                    itemContainer.appendChild(itemDiv);
+                });
+
+                // 重新绑定点击事件
+                bindItemClickEvent();  // 确保事件被正确绑定
+            } else {
+                itemContainer.innerHTML = `<p>${data.message}</p>`;
+            }
+        })
+        .catch(error => {
+            console.error('物品加载失败:', error);
+            itemContainer.innerHTML = '<p>加载失败，请稍后重试。</p>';
+        });
+}
+
+        function fetchItems() {
+            
+            // 重新加载装备
+            switchTab('equipment');
+            // 重新加载功法
+            switchTab('techniques');
+            // 重新加载丹药
+            switchTab('elixirs');
+        }
+
+                // 使用事件委托绑定物品点击事件
+        function bindItemClickEvent() {
+            const itemContainer = document.getElementById('item-container');
+
+            itemContainer.addEventListener('click', async function(event) {
+                const target = event.target;
+
+                // 确保点击的是 img 元素
+                if (target.tagName === 'IMG') {
+                    const itemId = target.getAttribute('data-id');
+                    const type = target.getAttribute('data-type');
+                    console.log("点击的物品 ID：", itemId);
+                    console.log("物品类型：", type);
+
+                    // 检查点击的物品是否是装备或技能，执行相应的操作
+                    if (type === 'equipment' || type === 'skills') {
+                        const equipped = target.classList.contains('equipped');
+                        const action = equipped ? '/unequip_item' : '/equip_item';
+                        const response = await fetch(action, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ item_id: itemId })
+                        });
+                        
+                        const data = await response.json();
+                        console.log(data)
+                        if (data.success) {
+                            console.log("ok")
+                            print("ok")
+                            fetchItems();  // 重新加载物品
+                        }
+                        else{
+                            console.log("fail")
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function renderItems(items, type) {
+            const container = document.getElementById(`${type}-container`);
+            container.innerHTML = '';
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+                itemElement.classList.toggle('equipped', item.equipped === 1);
+                itemElement.setAttribute('data-id', item.item_id || item.skill_id);
+                itemElement.setAttribute('data-type', type);
+                itemElement.style.backgroundImage = `url(../static/${type}_${item.item_id || item.skill_id}.png)`;
+                itemElement.onclick = handleItemClick;
+                container.appendChild(itemElement);
+            });
+        }
+
+        function renderAlchemy(items) {
+            const container = document.getElementById('alchemy-container');
+            container.innerHTML = '';
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+                itemElement.setAttribute('data-id', item.alchemy_id);
+                itemElement.style.backgroundImage = `url(../static/alchemy_${item.alchemy_id}.png)`;
+                itemElement.onclick = handleAlchemyClick;
+                container.appendChild(itemElement);
+            });
+        }
+
+        async function handleItemClick(event) {
+            const itemId = event.target.getAttribute('data-id');
+            const type = event.target.getAttribute('data-type');
+            console.log(type)
+            if (type === 'equipment' || type === 'skills') {
+                const equipped = event.target.classList.contains('equipped');
+                const action = equipped ? '/unequip_item' : '/equip_item';
+                const response = await fetch(action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item_id: itemId })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    fetchItems();  // Re-fetch items to update the UI
+                }
+            }
+        }
+
+        async function handleAlchemyClick(event) {
+            const alchemyId = event.target.getAttribute('data-id');
+            const response = await fetch('/use_alchemy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ alchemy_id: alchemyId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                fetchItems();  // Re-fetch alchemy items to remove used one
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const defaultButton = document.querySelector('.tab-button.active');
+            if (defaultButton) {
+                defaultButton.click();
+            } else {
+                switchTab('equipment');
+            }
+        });
+
+        window.onload = function () {
+            fetch('/calculate_fighting_strength')
+                .then(response => response.json())
+                .then(res => {
+                    document.getElementById('fighting_strength').textContent = Math.floor(res.fighting_strength)
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>
