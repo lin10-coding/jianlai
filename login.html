@@ -11,7 +11,6 @@
             padding: 0;
             height: 100%;
             font-family: 'Arial', sans-serif;
-            background-image: url('../static/background3.gif');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -140,7 +139,7 @@
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            color: #fff; /* 设置文字颜色为白色 */
+            color: #272c51; /* 设置文字颜色为白色 */
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -164,17 +163,44 @@
             align-items: center;
             z-index: 1; /* 确保内容在视频前面 */
         }
+        #musicControl {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <!-- 添加视频背景 -->
     <video autoplay muted loop id="background-video">
-        <source src="../static/background3.mp4" type="video/mp4">
+        <source src="../static/background4.mp4" type="video/mp4">
         您的浏览器不支持HTML5视频标签。
     </video>
     <div class="center-container">
         <!-- 动态文字容器 -->
         <div id="dynamicText"></div>
+        <!-- 剧本选择 -->
+         <!-- 副本选择和下拉框 -->
+         <div style="display: flex; align-items: center; margin-top: 20px; gap: 10px; font-size: 18px;">
+            <label for="scriptSelect" style="color: #FFD700; font-weight: bold;">副本选择：</label>
+            <select id="scriptSelect" style="
+                padding: 8px 12px; 
+                font-size: 16px; 
+                color: #4CAF50; 
+                border: 2px solid #FFD700; 
+                border-radius: 5px; 
+                background-color: #FFF5E1; 
+                outline: none;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            " 
+            onfocus="this.style.borderColor='#FF4500'; this.style.boxShadow='0 0 10px #FF4500';"
+            onblur="this.style.borderColor='#FFD700'; this.style.boxShadow='none';">
+                <option value="jianlai">剑来</option>
+                <option value="fantasy">幻想</option>
+                <option value="mystery">谜题</option>
+            </select>
+        </div>
 
         <!-- 游戏登录按钮 -->
         <button class="login-button" onclick="toggleModal(true)">游戏登录</button>
@@ -202,6 +228,13 @@
             <button class = "button" onclick="window.location.href='{{ url_for('register') }}'">创建角色</button>
         </div>
     </div>
+     <!-- 音乐控制 -->
+    <img id="musicControl" src="../static/speaker-icon-on.png" alt="音乐控制">
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="../static/music/background.mp3" type="audio/mpeg">
+        您的浏览器不支持 audio 标签。
+    </audio>
+
     <script src="../static/JavaScript/JQuery.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -235,6 +268,19 @@
     
             skipButton.onclick = skipTextAnimation; // 绑定跳过功能到按钮
         });
+         document.addEventListener("DOMContentLoaded", function() {
+            const musicControl = document.getElementById("musicControl");
+            const backgroundMusic = document.getElementById("backgroundMusic");
+            musicControl.onclick = function() {
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play();
+                    musicControl.src = "../static/speaker-icon-on.png";
+                } else {
+                    backgroundMusic.pause();
+                    musicControl.src = "../static/speaker-icon.png";
+                }
+            };
+        });
 
         function toggleModal(state) {
             const modal = document.getElementById("loginModal");
@@ -244,8 +290,7 @@
         function enterGame() {
             const player_name = document.getElementById("roleName").value;
             const password = document.getElementById("password").value;
-            console.log(typeof player_name)
-            console.log(typeof password)
+         
             if (roleName == "" || password == "") {
                 alert('请输入账号密码')
             }

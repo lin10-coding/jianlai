@@ -6,10 +6,9 @@
 
 <title>游戏主页面</title>
 <style>
-  
     html {
       font-family: Arial, sans-serif;
-      background-image: url(../static/bg_dungeon.png);
+      background-image: url(../static/bg_home.jpg);
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -21,128 +20,135 @@
     }
 
     .character-info {
-      position: absolute;
-      top: 10%;
-      left: 5%;
-      width: 10%;
-      height: 10%;
-      transform: scale(1.5);
-    }
-
-    .character-avatar {
-      width: 100%;
-      height: 120%;
-      left: 12%;
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .battle-value {
-      font-size: 100%;
-      position: relative;
-      top: 45%;
-      left: 40%;
-      color: rgb(0, 0, 0);
-      width: 100%;
-      height: 100%;
-    }
-
-    .avatar-bg-bottom {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 120%;
-      height: 150%;
-      z-index: -1;
-    }
-
-    .avatar-bg-top {
-      position: absolute;
-      left: 0;
-      top: 100%;
-      width: 100%;
-      height: 50%;
-      z-index: 1;
-    }
-
-    .battle-value-bg {
-      position: absolute;
-      top: 150%;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      z-index: -2;
-    }
-
-    .box-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
-    }
-
-    .box-row {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
-    }
-
-    .box-img {
-      width: 100%;
-      height: 100%;
-    }
-
-    .box-caption {
-      font-size: 100%;
-      text-align: center;
-      margin-top: -20%;
-      width: 100%;
-      height: 100%;
-    }
-
-        /* 属性条 */
-        .attribute-bar {
-            display: flex;
-            justify-content: space-around;
-            width: 60%;
-            right: 50%;
-            margin-left: 22%;
-            margin-top: 0;
-            background-image: url('../static/dingbubeijing.png');
-            background-size: auto 120%;
-            background-position: center;
-            padding: 1%;
-            border-radius: 1%;
+            position: absolute;
+            top: 200px;
+            left: 100px;
+            transform: scale(1.5);
         }
 
-        .attribute-bar div {
+        .character-avatar {
+            width: 200px;
+            height: 200px;
+            left: 30px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .battle-value {
+            font-size: 30px;
+            position: relative;
+            top: 20px;
+            left: 100px;
+            color: rgb(0, 0, 0);
+        }
+
+        .avatar-bg-bottom {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 250px;
+            z-index: -1;
+        }
+
+        .avatar-bg-top {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: 1;
+        }
+
+        .battle-value-bg {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 250px;
+            height: 70px;
+            z-index: -2;
+        }
+
+        .box-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 4%;
+            justify-content: space-between;
+            margin-top: 20px;
         }
 
-    .event-description-container {
-      position: absolute;
-      top: 20%;
-      left: 25%;
-      width: 50%;
-      height: 60%; /* 限制文本框高度 */
-      color: white;
-      font-size: 90%;
-      line-height: 1.2;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      overflow-y: auto; /* 允许垂直滚动 */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end; /* 将按钮固定在容器底部 */
-      align-items: center; /* 垂直居中内容 */
-    }
+        .box-row {
+            display: flex;
+            justify-content: space-between;
+        }
 
+        .box-img {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+        cursor: pointer;
+           transition: transform 0.3s ease;
+}
+
+        .box-caption {
+            font-size: 30px;
+            text-align: center;
+            margin-top: -20px;
+        }
+
+
+.box-img:hover {
+    transform: scale(1.2); /* Enlarge the image on hover */
+}
+
+        .characteristic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 40%;
+            text-align: center;
+            padding: 10px 0;
+            background-image: url('../static/bg_header.png');
+            background-size: 80% 90%;
+            background-position: center;
+            background-color: transparent;
+        }
+
+
+ .event-description-container {
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    width: 50%;
+    height: 60%; /* 限制文本框高度 */
+    color: white;
+    font-size: 90%;
+    line-height: 1.2;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto; /* 允许垂直滚动 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 调整为space-between以在顶部和底部之间分配空间 */
+    align-items: center; /* 垂直居中内容 */
+}
+
+.button-container {
+    display: flex; /* 使用flex布局 */
+    width: 100%; /* 占满整个容器宽度 */
+    justify-content: space-between; /* 按钮之间的空间平分 */
+}
+
+.next-year-button {
+    flex-grow: 1; /* 使每个按钮平分空间 */
+    margin: 0; /* 移除按钮之间的默认边距 */
+}
     .event-description {
       flex-grow: 1;
       overflow-y: auto; /* 如有需要可滚动 */
@@ -171,7 +177,7 @@
       display: block; /* 按钮始终显示 */
       align-self: flex-end; /* 将按钮固定在容器底部 */
     }
-    
+
     /* 定位帮助按钮：左上角 */
     .help-button {
       position: absolute;
@@ -185,6 +191,7 @@
       border: none;
       cursor: pointer;
       z-index: 10;
+      background-color: transparent;
     }
 
     /* 定位设置按钮：右下角 */
@@ -192,15 +199,20 @@
       position: absolute;
       bottom: 10px;
       right: 10px;
-      width: 50px;
-      height: 50px;
+      width: 100px;
+      height: 100px;
       background-image: url('../static/lock.png'); /* 请替换为实际的设置图标路径 */
       background-size: contain;
       background-position: center;
       border: none;
       cursor: pointer;
       z-index: 10;
+      background-color: transparent; /* Make the background transparent */
+      transition: transform 0.3s ease;
     }
+    .settings-button:hover {
+    transform: scale(1.2); /* Enlarge the image by 20% on hover */
+}
     .box-button {
     background: none;
     border: none;
@@ -218,123 +230,221 @@
   .box-button img:hover {
     transform: scale(1.05);
   }
-
+ .content-group {
+            font-size: 20px;
+            font-weight: bold;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            column-gap: 100px;
+            row-gap: 10px;
+        }
+        /* 底部经验条 */
+        #experience-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%; /* 设置宽度为100%，使其与页面宽度一致 */
+            height: 10px;
+            background-color: gray;
+            border-radius: 5px;
+        }
   </style>
 </head>
 
 <body>
-  <div class="character-info">
-    <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
-    <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
-    <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
-    <div class="battle-value">1000</div>
-    <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
-    <div class="box-container">
-      <div class="box-row">
+<div class="header">
+        <div class="characteristic">
+            <div class="content-group">
+                <div class="input-group">根骨: <span id="display-root_bone"></span></div>
+                <div class="input-group">魅力: <span id="display-charm"></span></div>
+                <div class="input-group">家境: <span id="display-family_back_ground"></span></div>
+                <div class="input-group">悟性: <span id="display-insight"></span></div>
+                <div class="input-group">机缘: <span id="display-fate"></span></div>
+                <div class="input-group">体魄: <span id="display-physique"></span></div>
+            </div>
+        </div>
+    </div>
+ <div class="character-info">
+        <img class="character-avatar" src="../static/character_avatar.png" alt="Character Avatar">
+        <img class="avatar-bg-bottom" src="../static/bg_charactar_avatar_bottom.png" alt="Bottom Background">
+        <img class="avatar-bg-top" src="../static/bg_charactar_avatar_top.png" alt="Top Background">
+        <div class="battle-value" id="fighting_strength"></div>
+        <img class="battle-value-bg" src="../static/bg_battle_value.png" alt="Battle Value Background">
+       <div class="box-container">
+    <div class="box-row">
         <div>
-          <button class="box-button" onclick="cultivate()">
             <img class="box-img" src="../static/cultivate_box.png" alt="Box 1" onclick="toCultivate()">
             <div class="box-caption">修炼</div>
-          </button>
         </div>
         <div>
-          <button class="box-button" onclick="showTechniques()">
             <img class="box-img" src="../static/techniques_box.png" alt="Box 2" onclick="toSkill()">
             <div class="box-caption">功法</div>
-          </button>
         </div>
-      </div>
-      <div class="box-row">
+    </div>
+    <div class="box-row">
         <div>
-          <button class="box-button" onclick="enterDungeon()">
             <img class="box-img" src="../static/dungeon_box.png" alt="Box 3" onclick="toDungeon()">
             <div class="box-caption">副本</div>
-          </button>
         </div>
         <div>
-          <button class="box-button" onclick="openBackpack()">
             <img class="box-img" src="../static/backpack_box.png" alt="Box 4" onclick="toBag()">
             <div class="box-caption">背包</div>
-          </button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 属性条 -->
-  <div class="attribute-bar">
-    <div>
-        <span>根骨: 7</span>
-        <span>悟性: 2</span>
-    </div>
-    <div>
-        <span>魅力: 3</span>
-        <span>机缘: 2</span>
-    </div>
-    <div>
-        <span>家境: 5</span>
-        <span>体魄: 1</span>
     </div>
 </div>
+    </div>
+
+
 
 <div class="event-description-container">
-    <div class="event-description" id="event-description">
+    <div class="event-description">
         <!-- 事件描述内容 -->
     </div>
     <!-- 加载中的提示将在这里显示 -->
     <div id="loadingIndicator" style="display:none; margin-top: 10px; text-align: center;">加载中...</div>
-    <button class="next-year-button" onclick="nextYear()">开启下一年</button>
+    <!-- 按钮容器 -->
+    <div class="button-container">
+        <button class="next-year-button" type="button" onclick="handleNextYearClick(1)">1</button>
+        <button class="next-year-button" type="button" onclick="handleNextYearClick(2)">2</button>
+    </div>
 </div>
+
   <!-- 帮助和设置按钮 -->
   <button class="help-button" onclick="showHelp()"></button>
-  <button class="settings-button" onclick="showSettings()"></button>
+  <button class="settings-button" onclick="toSettings()"></button>
 
+<!-- 经验条：max表示当前等级的最大经验值，value表示当前经验值，显示在页面最下方-->
+  <meter min="0" max="500" value="200" id="experience-bar"></meter>
   <script src="../static/JavaScript/JQuery.js"></script>
   <script>
     // 用于控制事件描述显示的函数
-function nextYear() {
+function handleNextYearClick(number) {
     // 获取事件描述容器和加载提示元素
     var eventDescription = document.querySelector('.event-description');
-    var loadingIndicator = document.getElementById('loadingIndicator');
+    var loadingIndicator = document.getElementById('loadingIndicator'); // 确保你有一个id为loadingIndicator的元素
 
     // 显示加载中的提示
     loadingIndicator.style.display = 'block';
 
-    // 禁用按钮，防止重复点击
-    var nextYearButton = document.querySelector('.next-year-button');
-    nextYearButton.disabled = true;
+    // 禁用所有按钮，防止重复点击
+    var nextYearButtons = document.querySelectorAll('.next-year-button');
+    nextYearButtons.forEach(function(button) {
+        button.disabled = true;
+    });
 
+    // 发送 AJAX 请求
     $.ajax({
         url: '/apprenticeAI',
-        type: 'get',
+        type: 'post',
+        data: JSON.stringify({
+            'number': number,
+        }),
         contentType: 'application/json',
-        success: function(res) {
-            // 创建一个新的段落元素
-            var newParagraph = document.createElement('p');
-            newParagraph.textContent = res; // 设置新段落的文本内容为返回的数据
-            eventDescription.appendChild(newParagraph); // 将新段落添加到事件描述容器中
+      success: function(res) {
+     // 假设返回的内容是选项以 'A.' 或 'B.' 开头的形式
+        var contentParts = res.split(/(1\..*|2\..*)/); // 根据 'A.' 或 'B.' 分割正文和选项
 
-            eventDescription.scrollTop = eventDescription.scrollHeight;
+        // 插入正文描述部分
+        var descriptionText = contentParts[0].trim();
+        var descriptionParagraph = document.createElement('p');
+        descriptionParagraph.textContent = descriptionText;
+        eventDescription.appendChild(descriptionParagraph);
 
-            // 隐藏加载中的提示
-            loadingIndicator.style.display = 'none';
+        // 插入选项部分（每个选项独立为一段）
+        contentParts.slice(1).forEach(function(option) {
+            if (option.trim() !== '') {
+                var optionParagraph = document.createElement('p'); // 创建段落
+                optionParagraph.textContent = option.trim();       // 设置文本内容
+                optionParagraph.style.marginTop = '10px';          // 可选：为选项添加上边距
+                eventDescription.appendChild(optionParagraph);     // 添加到容器中
+            }
+        });
 
-            // 重新启用按钮
-            nextYearButton.disabled = false;
-        },
+    eventDescription.scrollTop = eventDescription.scrollHeight;
+    
+    // 隐藏加载中的提示
+    loadingIndicator.style.display = 'none';
+
+    // 重新启用所有按钮
+    nextYearButtons.forEach(function(button) {
+        button.disabled = false;
+    });
+    // 解析res文本以获取属性值
+    var attributes = {
+        '根骨': 0,
+        '魅力': 0,
+        '家境': 0,
+        '悟性': 0,
+        '机缘': 0,
+        '体魄': 0
+    };
+    // 定义一个函数来提取属性值
+    function extractAttributeValue(text, attribute) {
+        var regex = new RegExp(attribute + ': \\+?(\\d+)', 'i');
+        var match = text.match(regex);
+        return match ? parseInt(match[1], 10) : 0;
+    }
+    // 提取每个属性的值
+    attributes['根骨'] = extractAttributeValue(res, '根骨');
+    attributes['魅力'] = extractAttributeValue(res, '魅力');
+    attributes['家境'] = extractAttributeValue(res, '家境');
+    attributes['悟性'] = extractAttributeValue(res, '悟性');
+    attributes['机缘'] = extractAttributeValue(res, '机缘');
+    attributes['体魄'] = extractAttributeValue(res, '体魄');
+    // 打印提取的属性值（或者根据需要进行其他操作）
+     $.ajax({
+            url: '/update_attributions', // Flask 后端的路由
+            type: 'POST',
+            data: JSON.stringify({
+                root_bone : attributes['根骨'],
+                charm : attributes['魅力'],
+                family_back_ground : attributes['家境'],
+                insight : attributes['悟性'],
+                fate : attributes['机缘'],
+                physique : attributes['体魄']
+            }),
+            contentType: 'application/json', // 发送的数据类型
+            success: function(res) {
+                document.getElementById('display-root_bone').textContent = res.root_bone
+                    document.getElementById('display-charm').textContent = res.charm
+                    document.getElementById('display-family_back_ground').textContent = res.family_back_ground
+                    document.getElementById('display-insight').textContent = res.insight
+                    document.getElementById('display-fate').textContent = res.fate
+                    document.getElementById('display-physique').textContent = res.physique
+                    $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent =Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+            },
+            error: function(error) {
+                console.log(error)
+            }
+     })
+    
+},
         error: function(res) {
             console.error('Error:', res);
-            // 隐藏加载中的提示
-            loadingIndicator.style.display = 'none';
-            // 重新启用按钮
-            nextYearButton.disabled = false;
+            // 启用所有按钮
+            nextYearButtons.forEach(function(button) {
+                button.disabled = false;
+            });
         }
     });
 }
     function showHelp() {
             alert("显示帮助内容...");
         }
-        function showSettings() {
+        function toSettings() {
             window.location.href='/settings'
         }
         function toCultivate() {
@@ -346,9 +456,68 @@ function nextYear() {
         function toDungeon(){
           window.location.href='/dungeon'
         }
-        function toBag(){
+        function toBag(){  
           window.location.href='/bag'
         }
+        window.onload = function() {
+            var eventDescription = document.querySelector('.event-description');
+            var loadingIndicator = document.getElementById('loadingIndicator');
+             // 显示加载中的提示
+            loadingIndicator.style.display = 'block';
+            // 禁用按钮，防止重复点击
+            var nextYearButton = document.querySelector('.next-year-button');
+    nextYearButton.disabled = true;
+            $.ajax({
+                url:'/return_attributions',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('display-root_bone').textContent = res.root_bone
+                    document.getElementById('display-charm').textContent = res.charm
+                    document.getElementById('display-family_back_ground').textContent = res.family_back_ground
+                    document.getElementById('display-insight').textContent = res.insight
+                    document.getElementById('display-fate').textContent = res.fate
+                    document.getElementById('display-physique').textContent = res.physique
+            
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+            $.ajax({
+                url:'/calculate_fighting_strength',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    document.getElementById('fighting_strength').textContent =  Math.floor(res.fighting_strength)
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+            $.ajax({
+                url:'/return_storyFun',
+                type:'get',
+                contentType:'application/json',
+                success:function(res) {
+                    // 创建一个新的段落元素
+                var newParagraph = document.createElement('p');
+            newParagraph.textContent = res; // 设置新段落的文本内容为返回的数据
+            eventDescription.appendChild(newParagraph); // 将新段落添加到事件描述容器中
+
+            eventDescription.scrollTop = eventDescription.scrollHeight;
+
+            // 隐藏加载中的提示
+            loadingIndicator.style.display = 'none';
+
+            // 重新启用按钮
+            nextYearButton.disabled = false;
+                },
+                error:function(res){
+                    console.error('Error:', res);
+                }
+            })
+        };
   </script>
 </body>
 </html>
